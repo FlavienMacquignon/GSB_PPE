@@ -23,7 +23,7 @@ $estConnecte = estConnecte();
 require 'vues/v_entete.php';
 // INFO Ceci est la variable de controle
 $uc = filter_input(INPUT_GET, 'uc', FILTER_SANITIZE_STRING);
-// WARN Pourquoi  un test est effectué sur $us ici? Quel intér^et, elle n'est pas censé enregistrer un string?
+// WARN Pourquoi  un test est effectué sur $us ici? Quel interet, elle n'est pas censé enregistrer un string?
 if ($uc && !$estConnecte) {
     $uc = 'connexion';
 } elseif (empty($uc)) {
