@@ -29,6 +29,7 @@
     <body>
         <div class="container">
             <?php
+            // TODO check this "INPUT_GET" ==> PRobablement ceci qui modifie $uc
             $uc = filter_input(INPUT_GET, 'uc', FILTER_SANITIZE_STRING);
             if ($estConnecte) {
                 ?>

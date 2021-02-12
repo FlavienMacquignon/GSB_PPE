@@ -26,16 +26,21 @@ case 'demandeConnexion':
 case 'valideConnexion':
     $login = filter_input(INPUT_POST, 'login', FILTER_SANITIZE_STRING);
     $mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_STRING);
+
     $visiteur = $pdo->getInfosVisiteur($login, $mdp);
     if (!is_array($visiteur)) {
         ajouterErreur('Login ou mot de passe incorrect');
         include 'vues/v_erreurs.php';
         include 'vues/v_connexion.php';
     } else {
+        // TODO Modification ici pour prendre en compte le role et rediriger l'utilisateur en conséquence
         $id = $visiteur['id'];
         $nom = $visiteur['nom'];
         $prenom = $visiteur['prenom'];
         connecter($id, $nom, $prenom);
+        // WARN Regarder ceci, que fait "header()" exactement? Une simple redirection? Pourquoi "Location: index.php"
+        // WARN la valeur de $uc n'est pas modifiée ici, elle correspond donc toujours à ce que lui a attribué v_connexion.php ("connexion")? ==> Comment est-t'on redirigé après ça?
+        // WARN v_entete.php intègre un test pour savoir si l'utilisateur est connecté; cela modifie le retour
         header('Location: index.php');
     }
     break;

@@ -21,6 +21,7 @@
                 <h3 class="panel-title">Identification utilisateur</h3>
             </div>
             <div class="panel-body">
+                <!-- INFO on modifie ici la variable $action (répond à c_connexion.php) -->
                 <form role="form" method="post" 
                       action="index.php?uc=connexion&action=valideConnexion">
                     <fieldset>

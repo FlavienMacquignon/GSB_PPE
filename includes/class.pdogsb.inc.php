@@ -36,6 +36,8 @@
  * @link      http://www.php.net/manual/fr/book.pdo.php PHP Data Objects sur php.net
  */
 
+// TODO Modifier la blibliothèque pour lui faire intégrer les changements dans la base de donnée
+
 class PdoGsb
 {
     private static $serveur = 'mysql:host=localhost';
@@ -82,6 +84,7 @@ class PdoGsb
         return PdoGsb::$monPdoGsb;
     }
 
+    // TODO Modifier cette fonction pour lui faire prendre en compte le role de l'utilisateur
     /**
      * Retourne les informations d'un visiteur
      *

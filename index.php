@@ -18,14 +18,21 @@ require_once 'includes/fct.inc.php';
 require_once 'includes/class.pdogsb.inc.php';
 session_start();
 $pdo = PdoGsb::getPdoGsb();
+// INFO Retourne une valeur de $_SESSION
 $estConnecte = estConnecte();
 require 'vues/v_entete.php';
+// INFO Ceci est la variable de controle
 $uc = filter_input(INPUT_GET, 'uc', FILTER_SANITIZE_STRING);
+// WARN Pourquoi  un test est effectué sur $us ici? Quel intér^et, elle n'est pas censé enregistrer un string?
 if ($uc && !$estConnecte) {
     $uc = 'connexion';
 } elseif (empty($uc)) {
     $uc = 'accueil';
 }
+// INFO renvoit vers les différentes pages de l'application
+// TODO Inclure ici un test en fonction du "role" dans la base de donnée
+// TODO Inclure une redirection vers "Valider Fiche Frais" et vers "Accueil Comptable"
+// TODO Modifier la route visiteur pour lui faire intégrer le terme "visiteur" dans les fichiers
 switch ($uc) {
 case 'connexion':
     include 'controleurs/c_connexion.php';
