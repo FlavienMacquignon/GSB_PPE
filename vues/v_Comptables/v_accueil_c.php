@@ -1,6 +1,6 @@
 <?php
 /**
- * Vue Accueil
+ * Vue Accueil Comptable
  *
  * PHP Version 7
  *
@@ -9,13 +9,11 @@
  * @author Flavien Macquignon <flavien.macquignon@fastmail.fr>
  */
 ?>
-
-<!-- TODO Trouver un moyen d'intégrer l'entete ici -->
 <div id="accueil">
     <h2>
         Gestion des frais<small> - Comptable :
             <?php
-            echo $_SESSION['prenom'] . ' ' . $_SESSION['nom'].' '.$_SESSION['role']
+            echo $_SESSION['prenom'] . ' ' . $_SESSION['nom']
             ?></small>
     </h2>
 </div>

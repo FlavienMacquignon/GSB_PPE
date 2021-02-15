@@ -14,6 +14,7 @@
  * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
  */
 
+//TODO vider $_SESSION lors de la deconnexion pour assurer que le style change bien de nouveau en bleu
 $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
 if (!$uc) {
     $uc = 'demandeconnexion';

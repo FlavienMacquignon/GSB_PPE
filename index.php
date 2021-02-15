@@ -30,8 +30,8 @@ if ($uc && !$estConnecte) {
     $uc = 'accueil';
 }
 // INFO renvoit vers les différentes pages de l'application
-// TODO Inclure ici un test en fonction du "role" dans la base de donnée
-// TODO Inclure une redirection vers "Valider Fiche Frais" et vers "Accueil Comptable"
+
+// TODO Inclure une redirection vers "Valider Fiche Frais"
 // TODO Modifier la route visiteur pour lui faire intégrer le terme "visiteur" dans les fichiers
 switch ($uc) {
 case 'connexion':
