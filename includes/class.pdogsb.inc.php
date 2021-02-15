@@ -97,11 +97,12 @@ class PdoGsb
     public function getInfosUser($login, $mdp)
     {
         $requetePrepare = PdoGsb::$monPdo->prepare(
-            'SELECT user.idUserPK AS id, user.nom AS nom, '
+            'SELECT user.idUserPK AS id, '
+            . 'user.nom AS nom, '
             . 'user.prenom AS prenom, '
-            .'user.idRole AS role '
-            . 'FROM gsb_frais.user'
-            . ' WHERE user.login = :unLogin AND user.mdp = :unMdp'
+            . 'user.idRole AS role '
+            . 'FROM gsb_frais.user '
+            . 'WHERE user.login = :unLogin AND user.mdp = :unMdp'
         );
         $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMdp', $mdp, PDO::PARAM_STR);

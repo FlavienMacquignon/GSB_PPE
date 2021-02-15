@@ -13,7 +13,7 @@
  * @version   GIT: <0>
  * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
  */
-// FIXME ce test n'est pas bon, la page n'est jamais chargé (Boucle vers c_connexion) ==>(peut-etre un erreur au niveau de $_SESSION['role'] ?)
+
 if ($estConnecte) {
     if ($_SESSION['role']==1) {
         include 'vues/v_accueil.php';
@@ -23,5 +23,4 @@ if ($estConnecte) {
     }
 } else {
     include 'vues/v_connexion.php';
-    echo("include connexion");
 }
