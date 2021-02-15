@@ -33,7 +33,6 @@ case 'valideConnexion':
         include 'vues/v_erreurs.php';
         include 'vues/v_connexion.php';
     } else {
-        // TODO Modification ici pour prendre en compte le role et rediriger l'utilisateur en conséquence
         $id = $user['id'];
         $nom = $user['nom'];
         $prenom = $user['prenom'];
@@ -41,7 +40,7 @@ case 'valideConnexion':
         connecter($id, $nom, $prenom, $role);
         // WARN Regarder ceci, que fait "header()" exactement? Une simple redirection? Pourquoi "Location: index.php"
         // WARN la valeur de $uc n'est pas modifiée ici, elle correspond donc toujours à ce que lui a attribué v_connexion.php ("connexion")? ==> Comment est-t'on redirigé après ça?
-        // WARN v_entete.php intègre un test pour savoir si l'utilisateur est connecté; cela modifie le retour
+        // WARN v_entete.php intègre un test pour savoir si l'utilisateur est connecté; cela modifie le retour ?
         header('Location: index.php');
     }
     break;

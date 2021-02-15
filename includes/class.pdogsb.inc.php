@@ -85,22 +85,23 @@ class PdoGsb
     }
 
     // TODO Modifier cette fonction pour lui faire prendre en compte le role de l'utilisateur
+
     /**
-     * Retourne les informations d'un visiteur
+     * Retourne les informations d'un utilisateur
      *
-     * @param String $login Login du visiteur
-     * @param String $mdp   Mot de passe du visiteur
+     * @param String $login Login de l'utilisateur
+     * @param String $mdp Mot de passe de l'utilisateur
      *
-     * @return l'id, le nom et le prénom sous la forme d'un tableau associatif
+     * @return mixed l'id, le nom, le prénom et le role sous la forme d'un tableau associatif
      */
     public function getInfosUser($login, $mdp)
     {
         $requetePrepare = PdoGsb::$monPdo->prepare(
-            'SELECT user.id AS id, user.nom AS nom, '
-            . 'user.prenom AS prenom '
-            .'user.role'
-            . 'FROM user '
-            . 'WHERE user.login = :unLogin AND user.mdp = :unMdp'
+            'SELECT user.idUserPK AS id, user.nom AS nom, '
+            . 'user.prenom AS prenom, '
+            .'user.idRole AS role '
+            . 'FROM gsb_frais.user'
+            . ' WHERE user.login = :unLogin AND user.mdp = :unMdp'
         );
         $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMdp', $mdp, PDO::PARAM_STR);
