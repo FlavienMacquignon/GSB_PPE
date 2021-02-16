@@ -25,17 +25,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./styles/bootstrap/bootstrap.css" rel="stylesheet">
+    <link href="./styles/style.css" rel="stylesheet">
     <?php if ($estConnecte && $_SESSION['role'] == 2){ ?>
-    <link href="./styles/bootstrap/s_Comptables/bootstrap.css" rel="stylesheet">
+    <link href="./styles/style_comptable.css" rel="stylesheet">
     <?php
-    } else {
-        ?>
-        <link href="./styles/bootstrap/bootstrap.css" rel="stylesheet">
-
-        <?php
-
-    } ?>
-        <link href="./styles/style.css" rel="stylesheet">
+    }?>
 </head>
 <body>
 <div class="container">
@@ -55,6 +50,7 @@
                 </div>
                 <div class="col-md-8">
                     <ul class="nav nav-pills pull-right" role="tablist">
+                    <!-- TODO Modifier la logique de ces boutons (ou servir une autre entete -->
                         <li <?php if (!$uc || $uc == 'accueil') { ?>class="active" <?php } ?>>
                             <a href="index.php">
                                 <span class="glyphicon glyphicon-home"></span>

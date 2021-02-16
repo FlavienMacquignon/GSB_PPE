@@ -14,21 +14,23 @@
  * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
  */
 
-$idVisiteur = $_SESSION['idVisiteur'];
+$idUser = $_SESSION['idUser'];
 $mois = getMois(date('d/m/Y'));
 $numAnnee = substr($mois, 0, 4);
 $numMois = substr($mois, 4, 2);
 $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
 switch ($action) {
+    // FIXME ne fonctionne pas lorsque le role est visiteur mais fonctionne pour les comptables
 case 'saisirFrais':
-    if ($pdo->estPremierFraisMois($idVisiteur, $mois)) {
-        $pdo->creeNouvellesLignesFrais($idVisiteur, $mois);
+    if ($pdo->estPremierFraisMois($idUser, $mois)) {
+        $pdo->creeNouvellesLignesFrais($idUser, $mois);
     }
     break;
+
 case 'validerMajFraisForfait':
     $lesFrais = filter_input(INPUT_POST, 'lesFrais', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
     if (lesQteFraisValides($lesFrais)) {
-        $pdo->majFraisForfait($idVisiteur, $mois, $lesFrais);
+        $pdo->majFraisForfait($idUser, $mois, $lesFrais);
     } else {
         ajouterErreur('Les valeurs des frais doivent être numériques');
         include 'vues/v_erreurs.php';
@@ -43,7 +45,7 @@ case 'validerCreationFrais':
         include 'vues/v_erreurs.php';
     } else {
         $pdo->creeNouveauFraisHorsForfait(
-            $idVisiteur,
+            $idUser,
             $mois,
             $libelle,
             $dateFrais,
@@ -55,8 +57,12 @@ case 'supprimerFrais':
     $idFrais = filter_input(INPUT_GET, 'idFrais', FILTER_SANITIZE_STRING);
     $pdo->supprimerFraisHorsForfait($idFrais);
     break;
+
+case 'validerFrais':
+
+        break;
 }
-$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur, $mois);
-$lesFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $mois);
+$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idUser, $mois);
+$lesFraisForfait = $pdo->getLesFraisForfait($idUser, $mois);
 require 'vues/v_listeFraisForfait.php';
 require 'vues/v_listeFraisHorsForfait.php';

@@ -19,7 +19,7 @@ if ($estConnecte) {
         include 'vues/v_accueil.php';
     }
     else{
-        include 'vues/v_Comptables/v_accueil.php';
+        include 'vues/v_Comptables/v_accueil_c.php';
     }
 } else {
     include 'vues/v_connexion.php';
