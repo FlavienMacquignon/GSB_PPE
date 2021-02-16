@@ -1,0 +1,271 @@
+/**
+* Gestion des styles Comptables
+*
+* @category PPE
+* @package GSB
+* @author  Nicolas Gallagher <github.com/necolas/>
+* @author Flavien Macquignon <flavien_macquignon@fastmail.fr>
+* @licence MIT Licence <https://mit-license.org/>
+* @version v3.3.7.b
+*  TODO Vérifier longueur du texte ici
+* Ce fichier est une version tronquée de Bootstrap 3.3.7 (http://getbootstrap.com) certains de ces éléments sont soumis à Copyright (2011-2016 Twitter, Inc.)
+*/
+
+a {
+    color: #f88813;
+    text-decoration: none;
+}
+a:focus {
+    color: #b96105;
+    text-decoration: underline;
+}
+.text-muted {
+    color: #777777;
+}
+.text-primary {
+    color: #f88813;
+}
+a.text-primary:hover,
+a.text-primary:focus {
+    color: #d26e06;
+}
+.bg-primary {
+    color: #fff;
+    background-color: #f88813;
+}
+a.bg-primary:hover,
+a.bg-primary:focus {
+    background-color: #d26e06;
+}
+.btn-primary {
+    color: #ffffff;
+    background-color: #f88813;
+    border-color: #eb7b07;
+}
+.btn-primary:focus,
+.btn-primary.focus {
+    color: #ffffff;
+    background-color: #d26e06;
+    border-color: #6f3a03;
+}
+.btn-primary:hover {
+    color: #ffffff;
+    background-color: #d26e06;
+    border-color: #af5c05;
+}
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+    color: #ffffff;
+    background-color: #d26e06;
+    border-color: #af5c05;
+}
+.btn-primary:active:hover,
+.btn-primary.active:hover,
+.open > .dropdown-toggle.btn-primary:hover,
+.btn-primary:active:focus,
+.btn-primary.active:focus,
+.open > .dropdown-toggle.btn-primary:focus,
+.btn-primary:active.focus,
+.btn-primary.active.focus,
+.open > .dropdown-toggle.btn-primary.focus {
+    color: #ffffff;
+    background-color: #af5c05;
+    border-color: #6f3a03;
+}
+.btn-primary.disabled:hover,
+.btn-primary[disabled]:hover,
+fieldset[disabled] .btn-primary:hover,
+.btn-primary.disabled:focus,
+.btn-primary[disabled]:focus,
+fieldset[disabled] .btn-primary:focus,
+.btn-primary.disabled.focus,
+.btn-primary[disabled].focus,
+fieldset[disabled] .btn-primary.focus {
+    background-color: #f88813;
+    border-color: #eb7b07;
+}
+.btn-primary .badge {
+    color: #f88813;
+    background-color: #ffffff;
+}
+.btn-info {
+    color: #ffffff;
+    background-color: #FAB368;
+    border-color: #f9a74f;
+}
+.btn-info:focus,
+.btn-info.focus {
+    color: #ffffff;
+    background-color: #f89a37;
+    border-color: #c36706;
+}
+.btn-info:hover {
+    color: #ffffff;
+    background-color: #f89a37;
+    border-color: #f78914;
+}
+.btn-info:active,
+.btn-info.active,
+.open > .dropdown-toggle.btn-info {
+    color: #ffffff;
+    background-color: #f89a37;
+    border-color: #f78914;
+}
+.btn-info:active:hover,
+.btn-info.active:hover,
+.open > .dropdown-toggle.btn-info:hover,
+.btn-info:active:focus,
+.btn-info.active:focus,
+.open > .dropdown-toggle.btn-info:focus,
+.btn-info:active.focus,
+.btn-info.active.focus,
+.open > .dropdown-toggle.btn-info.focus {
+    color: #ffffff;
+    background-color: #f78914;
+    border-color: #c36706;
+}
+.btn-info.disabled:hover,
+.btn-info[disabled]:hover,
+fieldset[disabled] .btn-info:hover,
+.btn-info.disabled:focus,
+.btn-info[disabled]:focus,
+fieldset[disabled] .btn-info:focus,
+.btn-info.disabled.focus,
+.btn-info[disabled].focus,
+fieldset[disabled] .btn-info.focus {
+    background-color: #FAB368;
+    border-color: #f9a74f;
+}
+.btn-link {
+    font-weight: normal;
+    color: #f88813;
+    border-radius: 0;
+}
+.btn-link:hover,
+.btn-link:focus {
+    color: #b96105;
+    text-decoration: underline;
+    background-color: transparent;
+}
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus {
+    color: #ffffff;
+    text-decoration: none;
+    background-color: #f88813;
+    outline: 0;
+}
+.nav .open > a,
+.nav .open > a:hover,
+.nav .open > a:focus {
+    background-color: #eeeeee;
+    border-color: #f88813;
+}
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+    color: #ffffff;
+    background-color: #f88813;
+}
+.pagination > li > a,
+.pagination > li > span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #f88813;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+.pagination > li > a:hover,
+.pagination > li > span:hover,
+.pagination > li > a:focus,
+.pagination > li > span:focus {
+    z-index: 2;
+    color: #b96105;
+    background-color: #eeeeee;
+    border-color: #dddddd;
+}
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+    z-index: 3;
+    color: #ffffff;
+    cursor: default;
+    background-color: #f88813;
+    border-color: #f88813;
+}
+.label-primary {
+    background-color: #f88813;
+}
+.label-primary[href]:hover,
+.label-primary[href]:focus {
+    background-color: #d26e06;
+}
+.label-info {
+    background-color: #FAB368;
+}
+.label-info[href]:hover,
+.label-info[href]:focus {
+    background-color: #f89a37;
+}
+.list-group-item.active > .badge,
+.nav-pills > .active > a > .badge {
+    color: #f88813;
+    background-color: #ffffff;
+}
+a.thumbnail:hover,
+a.thumbnail:focus,
+a.thumbnail.active {
+    border-color: #f88813;
+}
+.progress-bar {
+    float: left;
+    width: 0;
+    height: 100%;
+    font-size: 12px;
+    line-height: 20px;
+    color: #fff;
+    text-align: center;
+    background-color: #f88813;
+    -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);
+    -webkit-transition: width .6s ease;
+    -o-transition: width .6s ease;
+    transition: width .6s ease;
+}
+.progress-bar-info {
+    background-color: #FAB368;
+}
+.list-group-item.active,
+.list-group-item.active:hover,
+.list-group-item.active:focus {
+    z-index: 2;
+    color: #ffffff;
+    background-color: #f88813;
+    border-color: #f88813;
+}
+panel-primary {
+    border-color: #f88813;
+}
+.panel-primary > .panel-heading {
+    color: #ffffff;
+    background-color: #f88813;
+    border-color: #f88813;
+}
+.panel-primary > .panel-heading + .panel-collapse > .panel-body {
+    border-top-color: #f88813;
+}
+.panel-primary > .panel-heading .badge {
+    color: #f88813;
+    background-color: #ffffff;
+}
+.panel-primary > .panel-footer + .panel-collapse > .panel-body {
+    border-bottom-color: #f88813;
+}
