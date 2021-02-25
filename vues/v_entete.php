@@ -50,7 +50,7 @@
                 </div>
                 <div class="col-md-8">
                     <ul class="nav nav-pills pull-right" role="tablist">
-                    <!-- TODO Modifier la logique de ces boutons (ou servir une autre entete -->
+                    <!-- TODO Modifier la logique de ces boutons (ou servir une autre entete) -->
                         <li <?php if (!$uc || $uc == 'accueil') { ?>class="active" <?php } ?>>
                             <a href="index.php">
                                 <span class="glyphicon glyphicon-home"></span>

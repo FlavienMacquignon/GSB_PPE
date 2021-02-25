@@ -20,7 +20,6 @@ $numAnnee = substr($mois, 0, 4);
 $numMois = substr($mois, 4, 2);
 $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
 switch ($action) {
-    // FIXME ne fonctionne pas lorsque le role est visiteur mais fonctionne pour les comptables
 case 'saisirFrais':
     if ($pdo->estPremierFraisMois($idUser, $mois)) {
         $pdo->creeNouvellesLignesFrais($idUser, $mois);
@@ -64,5 +63,6 @@ case 'validerFrais':
 }
 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idUser, $mois);
 $lesFraisForfait = $pdo->getLesFraisForfait($idUser, $mois);
+// TODO ajouter un test ici pour servir les bonnes vues en fonction du role
 require 'vues/v_listeFraisForfait.php';
 require 'vues/v_listeFraisHorsForfait.php';
