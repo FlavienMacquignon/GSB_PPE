@@ -109,6 +109,23 @@ class PdoGsb
         $requetePrepare->execute();
         return $requetePrepare->fetch();
     }
+    /**
+     *  Retourne une liste de tous les utilisateurs
+     *
+     * @return mixed l'id, le nom, le prénom sous la forme de d'un tableau associatif
+     */
+    public function getTousLesVisiteurs()
+    {
+        $requetePrepare = PdoGsb::$monPdo->prepare(
+            'SELECT user.idUserPK as id, '
+            . 'user.nom AS nom, '
+            . 'user.prenom AS prenom '
+            . 'FROM gsb_frais.user '
+            . 'WHERE user.idRole=1'
+        );
+        $requetePrepare->execute();
+        return $requetePrepare->fetch();
+    }
 
     /**
      * Retourne sous forme d'un tableau associatif toutes les lignes de frais
@@ -269,21 +286,21 @@ class PdoGsb
     /**
      * Teste si un visiteur possède une fiche de frais pour le mois passé en argument
      *
-     * @param String $idVisiteur ID du visiteur
-     * @param String $mois       Mois sous la forme aaaamm
+     * @param String $idUser ID de l'utilisateur
+     * @param String $mois Mois sous la forme aaaamm
      *
      * @return vrai ou faux
      */
-    public function estPremierFraisMois($idVisiteur, $mois)
+    public function estPremierFraisMois($idUser, $mois)
     {
         $boolReturn = false;
         $requetePrepare = PdoGsb::$monPdo->prepare(
             'SELECT fichefrais.mois FROM fichefrais '
             . 'WHERE fichefrais.mois = :unMois '
-            . 'AND fichefrais.idvisiteur = :unIdVisiteur'
+            . 'AND fichefrais.idUserPK= :unIdUser'
         );
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
-        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unIdUser', $idUser, PDO::PARAM_STR);
         $requetePrepare->execute();
         if (!$requetePrepare->fetch()) {
             $boolReturn = true;
