@@ -14,8 +14,6 @@
  * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
  */
 ?>
-
-<!-- TODO Check si cette page peut intégrer un if sur la connexion ==> (if role= 2 ==> thème orange-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,15 +25,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./styles/bootstrap/bootstrap.css" rel="stylesheet">
     <link href="./styles/style.css" rel="stylesheet">
-    <?php if ($estConnecte && $_SESSION['role'] == 2){ ?>
-    <link href="./styles/style_comptable.css" rel="stylesheet">
-    <?php
-    }?>
+    <?php if ($estConnecte && $_SESSION['role'] == 2) { ?>
+        <link href="./styles/style_comptable.css" rel="stylesheet">
+        <?php
+    } ?>
 </head>
 <body>
 <div class="container">
     <?php
-    // TODO check this "INPUT_GET" ==> Probablement ceci qui modifie $uc
     $uc = filter_input(INPUT_GET, 'uc', FILTER_SANITIZE_STRING);
     if ($estConnecte) {
         ?>
@@ -50,38 +47,64 @@
                 </div>
                 <div class="col-md-8">
                     <ul class="nav nav-pills pull-right" role="tablist">
-                    <!-- TODO Modifier la logique de ces boutons (ou servir une autre entete) -->
-                        <li <?php if (!$uc || $uc == 'accueil') { ?>class="active" <?php } ?>>
-                            <a href="index.php">
-                                <span class="glyphicon glyphicon-home"></span>
-                                Accueil
-                            </a>
-                        </li>
-                        <li <?php if ($uc == 'gererFrais') { ?>class="active"<?php } ?>>
-                            <a href="index.php?uc=gererFrais&action=saisirFrais">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                Renseigner la fiche de frais
-                            </a>
-                        </li>
-                        <li <?php if ($uc == 'etatFrais') { ?>class="active"<?php } ?>>
-                            <a href="index.php?uc=etatFrais&action=selectionnerMois">
-                                <span class="glyphicon glyphicon-list-alt"></span>
-                                Afficher mes fiches de frais
-                            </a>
-                        </li>
-                        <li
-                            <?php if ($uc == 'deconnexion') { ?>class="active"<?php } ?>>
-                            <a href="index.php?uc=deconnexion&action=demandeDeconnexion">
-                                <span class="glyphicon glyphicon-log-out"></span>
-                                Déconnexion
-                            </a>
-                        </li>
+                        <?php if ($_SESSION['role'] == 1) { ?>
+                            <li <?php if (!$uc || $uc == 'accueil') { ?>class="active" <?php } ?>>
+                                <a href="index.php">
+                                    <span class="glyphicon glyphicon-home"></span>
+                                    Accueil
+                                </a>
+                            </li>
+                            <li <?php if ($uc == 'gererFrais') { ?>class="active"<?php } ?>>
+                                <a href="index.php?uc=gererFrais&action=saisirFrais">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    Renseigner la fiche de frais
+                                </a>
+                            </li>
+                            <li <?php if ($uc == 'etatFrais') { ?>class="active"<?php } ?>>
+                                <a href="index.php?uc=etatFrais&action=selectionnerMois">
+                                    <span class="glyphicon glyphicon-list-alt"></span>
+                                    Afficher mes fiches de frais
+                                </a>
+                            </li>
+                            <li
+                                <?php if ($uc == 'deconnexion') { ?>class="active"<?php } ?>>
+                                <a href="index.php?uc=deconnexion&action=demandeDeconnexion">
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                    Déconnexion
+                                </a>
+                            </li>
+
+                        <?php } else { ?>
+                            <li <?php if (!$uc || $uc == 'accueil') { ?> class="active" <?php } ?>>
+                                <a href=index.php">
+                                    <span class="glyphicon glyphicon-home"></span>
+                                    Accueil
+                                </a>
+                            </li>
+                            <li <?php if ($uc == 'gererFrais'){ ?>class="active" <?php } ?>>
+                                <a href="index.php?uc=gereFrais$action=validerFrais">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    Valider les Fiches de Frais
+                                </a>
+                            </li>
+                            <!-- TODO suivitPayement ici-->
+                            <li <?php if ($uc == 'suivitPayement') { ?>class="active"<?php } ?>>
+                                <a href="index.php?us=suivitPayement&action=suivit">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    Suivre le paiement des fiches de frais</a>
+                            </li>
+                            <li <?php if ($uc == 'deconnexion') { ?>class="active"<?php } ?>>
+                                <a href="index.php?uc=deconnexion&action=demandeDeconnexion">
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                    Déconnexion
+                                </a>
+                            </li>
+                        <?php } ?>
                     </ul>
                 </div>
             </div>
         </div>
-        <?php
-    } else {
+    <?php } else {
         ?>
         <h1>
             <img src="./images/logo.jpg"
@@ -90,5 +113,4 @@
                  title="Laboratoire Galaxy-Swiss Bourdin">
         </h1>
         <?php
-    }
-
+    } ?>

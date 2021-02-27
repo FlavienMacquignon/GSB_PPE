@@ -8,6 +8,7 @@
  * @package   GSB
  * @author    Réseau CERTA <contact@reseaucerta.org>
  * @author    José GIL <jgil@ac-nice.fr>
+ * @author Flavien Macquignon <flavien.macquignon@fastmail.fr>
  * @copyright 2017 Réseau CERTA
  * @license   Réseau CERTA
  * @version   GIT: <0>
@@ -59,10 +60,19 @@ case 'supprimerFrais':
 
 case 'validerFrais':
 
+    // FIXME la page ne charge pas
+    //INFO a form type can hanle a submit button --> La variable dans c_etatFrais est passé comme ça vers le 2e cas
+        $lesVisiteurs = $pdo->getTousLesVisiteurs();
         break;
 }
 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idUser, $mois);
 $lesFraisForfait = $pdo->getLesFraisForfait($idUser, $mois);
 // TODO ajouter un test ici pour servir les bonnes vues en fonction du role
-require 'vues/v_listeFraisForfait.php';
-require 'vues/v_listeFraisHorsForfait.php';
+// FIXME Page saisieFrais invalide --> Problème de PDO (Nouvelles Tables)
+if($_SESSION['role']==1) {
+    require 'vues/v_listeFraisForfait.php';
+    require 'vues/v_listeFraisHorsForfait.php';
+}
+elseif($_SESSION['role']==2){
+    require 'vues/v_Comptables/v_validerFrais_c.php';
+}
