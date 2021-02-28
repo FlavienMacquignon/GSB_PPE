@@ -59,8 +59,14 @@ switch ($action) {
         break;
 
     case 'validerFrais':
-
         $lesVisiteurs = $pdo->getTousLesVisiteurs();
+        foreach ($lesVisiteurs as $unVisiteur){
+            //FIXME $lesMois est un array d'array où l'array de second niveau est un couple idVisiteur / Mois -> Comme etatFrais
+            $lesMois[$unVisiteur['id']]= $pdo->getLesMoisDisponibles($unVisiteur['id']);
+            //FIXME ceci ne fonctionne plus, je n'accède plus aux meme valeurs ici que pour etatFrais(2L)
+            $lesCles = array_keys($lesMois);
+            $moisASelectionner = $lesCles[0];
+        }
         break;
 }
 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idUser, $mois);

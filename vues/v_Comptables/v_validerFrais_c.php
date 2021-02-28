@@ -27,24 +27,39 @@
                         $nom = $unVisiteur['nom'];
                         ?>
                         <option value="<?php echo $idVisiteur ?>" onclick="reveal()">
-                            <?php echo $nom . ' ' .  $prenom?>
+                            <?php echo $nom . ' ' . $prenom ?>
                         </option>
                         <?php
                     } ?>
                 </select>
             </div>
             <script>
-                function reveal(){
-                    document.getElementById("hd-lstMois").hidden=false;
+                function reveal() {
+                    document.getElementById("hd-lstMois").hidden = false;
 
                 }
             </script>
             <div id="hd-lstMois" class="form-group" hidden>
-            <label for="lstMoisVisiteur" accesskey="n">Mois: </label>
+                <label for="lstMoisVisiteur" accesskey="n">Mois: </label>
                 <select id="lstMoisVisiteur" name="lstMoisVisiteur" class="form-control">
                     <?php
-                    // TODO Remplir cette dropdown
-                    // TODO Selectionner le dernier mois par défaut
+                    foreach ($lesVisiteurs as $unVisiteur) {
+                        foreach ($lesMois[$unVisiteur['id']] as $unMois) {
+                            $mois = $unMois['mois'];
+                            $numAnnee = $unMois['numAnnee'];
+                            $numMois = $unMois['numMois'];
+                            if ($mois == $moisASelectionner) {
+                                ?>
+                                <option selected value="<?php echo $mois ?>">
+                                    <?php echo $numMois . '/' . $numAnnee ?>
+                                </option>
+                            <?php } else { ?>
+                            <option value="<?php echo $mois ?>">
+                                <?php echo $numMois . '/' . $numAnnee ?>
+                                </option><?php
+                            }
+                        }
+                    }
                     ?>
 
                 </select>
