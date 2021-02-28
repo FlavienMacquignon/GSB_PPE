@@ -117,14 +117,28 @@ class PdoGsb
     public function getTousLesVisiteurs()
     {
         $requetePrepare = PdoGsb::$monPdo->prepare(
-            'SELECT user.idUserPK as id, '
+            'SELECT user.idUserPK AS id, '
             . 'user.nom AS nom, '
             . 'user.prenom AS prenom '
             . 'FROM gsb_frais.user '
-            . 'WHERE user.idRole=1'
+            . 'WHERE user.idRole = 1'
         );
         $requetePrepare->execute();
-        return $requetePrepare->fetch();
+        // return $requetePrepare->fetch();
+        $k=0;
+        $lesVisiteurs=array();
+        while($uneLigne=$requetePrepare->fetch()){
+            $id=$uneLigne['id'];
+            $nom=$uneLigne['nom'];
+            $prenom=$uneLigne['prenom'];
+            $lesVisiteurs[$k]= array(
+                'id' => $id,
+                'nom'=>$nom,
+                'prenom'=>$prenom
+            );
+            $k++;
+        };
+        return $lesVisiteurs;
     }
 
     /**
@@ -307,6 +321,7 @@ class PdoGsb
         }
         return $boolReturn;
     }
+
 
     /**
      * Retourne le dernier mois en cours d'un visiteur

@@ -76,13 +76,13 @@
 
                         <?php } else { ?>
                             <li <?php if (!$uc || $uc == 'accueil') { ?> class="active" <?php } ?>>
-                                <a href=index.php">
+                                <a href="index.php">
                                     <span class="glyphicon glyphicon-home"></span>
                                     Accueil
                                 </a>
                             </li>
                             <li <?php if ($uc == 'gererFrais'){ ?>class="active" <?php } ?>>
-                                <a href="index.php?uc=gereFrais$action=validerFrais">
+                                <a href="index.php?uc=gererFrais&action=validerFrais">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                     Valider les Fiches de Frais
                                 </a>

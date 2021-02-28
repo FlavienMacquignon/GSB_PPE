@@ -30,9 +30,6 @@ if ($uc && !$estConnecte) {
     $uc = 'accueil';
 }
 // INFO renvoit vers les différentes pages de l'application
-
-// TODO Inclure une redirection vers "Valider Fiche Frais"
-// TODO Modifier la route visiteur pour lui faire intégrer le terme "visiteur" dans les fichiers
 switch ($uc) {
 case 'connexion':
     include 'controleurs/c_connexion.php';

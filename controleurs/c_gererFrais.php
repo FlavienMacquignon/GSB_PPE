@@ -65,7 +65,6 @@ switch ($action) {
 }
 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idUser, $mois);
 $lesFraisForfait = $pdo->getLesFraisForfait($idUser, $mois);
-// TODO ajouter un test ici pour servir les bonnes vues en fonction du role
 // FIXME Page saisieFrais invalide --> Problème de PDO (Nouvelles Tables)
 if ($_SESSION['role'] == 1) {
     require 'vues/v_listeFraisForfait.php';
