@@ -29,7 +29,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
-                        <a href="index.php?uc=gererFrais&action=validerFrais"
+                        <a href="index.php?uc=gererFrais&action=choixFrais"
                            class="btn btn-success btn-lg" role="button">
                             <span class="glyphicon glyphicon-pencil"></span>
                             <br>Valider les fiches de frais</a>

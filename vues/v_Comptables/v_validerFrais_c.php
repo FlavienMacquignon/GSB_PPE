@@ -26,44 +26,38 @@
                         $prenom = $unVisiteur['prenom'];
                         $nom = $unVisiteur['nom'];
                         ?>
-                        <option value="<?php echo $idVisiteur ?>" onclick="reveal()">
+                        <option value="<?php echo $idVisiteur ?>" >
                             <?php echo $nom . ' ' . $prenom ?>
                         </option>
                         <?php
                     } ?>
                 </select>
             </div>
-            <script>
-                function reveal() {
-                    document.getElementById("hd-lstMois").hidden = false;
-
-                }
-            </script>
-            <div id="hd-lstMois" class="form-group" hidden>
+            <div id="hd-lstMois" class="form-group">
                 <label for="lstMoisVisiteur" accesskey="n">Mois: </label>
                 <select id="lstMoisVisiteur" name="lstMoisVisiteur" class="form-control">
                     <?php
-                    foreach ($lesVisiteurs as $unVisiteur) {
-                        foreach ($lesMois[$unVisiteur['id']] as $unMois) {
-                            $mois = $unMois['mois'];
-                            $numAnnee = $unMois['numAnnee'];
-                            $numMois = $unMois['numMois'];
-                            if ($mois == $moisASelectionner) {
-                                ?>
-                                <option selected value="<?php echo $mois ?>">
-                                    <?php echo $numMois . '/' . $numAnnee ?>
-                                </option>
-                            <?php } else { ?>
-                            <option value="<?php echo $mois ?>">
+                    foreach ($lesMois as $unMois) {
+                        $mois = $unMois['mois'];
+                        $numAnnee = $unMois['numAnnee'];
+                        $numMois = $unMois['numMois'];
+                        if ($mois == $moisASelectionner) {
+                            ?>
+                            <option selected value="<?php echo $moisASelectionner ?>">
                                 <?php echo $numMois . '/' . $numAnnee ?>
-                                </option><?php
-                            }
+                            </option>
+                        <?php } else { ?>
+                        <option value="<?php echo $mois ?>">
+                            <?php echo $numMois . '/' . $numAnnee ?>
+                            </option><?php
                         }
                     }
                     ?>
 
                 </select>
             </div>
+            <input id="ok" type="submit" value="Valider" class="btn btn-success" role="button">
+            <input id="annuler" type="submit" value="Effacer" class="btn btn-danger" role="button">
         </form>
     </div>
 </div>

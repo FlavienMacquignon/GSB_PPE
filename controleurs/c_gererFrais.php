@@ -58,14 +58,27 @@ switch ($action) {
         $pdo->supprimerFraisHorsForfait($idFrais);
         break;
 
-    case 'validerFrais':
+    case 'choixFrais':
         $lesVisiteurs = $pdo->getTousLesVisiteurs();
-        foreach ($lesVisiteurs as $unVisiteur){
+        foreach ($lesVisiteurs as $unVisiteur) {
             //FIXME $lesMois est un array d'array où l'array de second niveau est un couple idVisiteur / Mois -> Comme etatFrais
-            $lesMois[$unVisiteur['id']]= $pdo->getLesMoisDisponibles($unVisiteur['id']);
+            $lesMois[$unVisiteur['id']] = $pdo->getLesMoisDisponibles($unVisiteur['id']);
             //FIXME ceci ne fonctionne plus, je n'accède plus aux meme valeurs ici que pour etatFrais(2L)
             $lesCles = array_keys($lesMois);
             $moisASelectionner = $lesCles[0];
+        }
+        break;
+
+    case 'validerFrais':
+        $leVisiteur = filter_input(INPUT_POST, "lstVisiteur", FILTER_SANITIZE_STRING);
+        $leMois = filter_input(INPUT_POST, "lstMoisVisiteur", FILTER_SANITIZE_STRING);
+        if (is_null($leVisiteur) || is_null($leMois)) {
+            if (is_null($leVisiteur)) {
+                ajouterErreur('Un problème est survenu lors de la sélection du visiteur');
+            }
+            if (is_null($leMois)) {
+                ajouterErreur('Un problème est survenu dans la sélection du mois');
+            }
         }
         break;
 }
