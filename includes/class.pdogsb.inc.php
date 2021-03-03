@@ -258,7 +258,7 @@ class PdoGsb
             $requetePrepare = PdoGSB::$monPdo->prepare(
                 'UPDATE ligneFraisForfait '
                 . 'SET ligneFraisForfait.quantite = :uneQte '
-                . 'WHERE ligneFraisForfait.idUser = :unIdUser '
+                . 'WHERE ligneFraisForfait.idUserFK = :unIdUser '
                 . 'AND ligneFraisForfait.mois = :unMois '
                 . 'AND ligneFraisForfait.idFraisForfaitFK = :idFrais'
             );
