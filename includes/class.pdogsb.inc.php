@@ -231,8 +231,8 @@ class PdoGsb
     public function getLesIdFrais()
     {
         $requetePrepare = PdoGsb::$monPdo->prepare(
-            'SELECT fraisforfait.id as idfrais '
-            . 'FROM fraisforfait ORDER BY fraisforfait.id'
+            'SELECT fraisForfait.idFraisForfaitPK as idfrais '
+            . 'FROM fraisForfait ORDER BY fraisForfait.idFraisForfaitPK'
         );
         $requetePrepare->execute();
         return $requetePrepare->fetchAll();
@@ -308,7 +308,7 @@ class PdoGsb
         $requetePrepare = PdoGsb::$monPdo->prepare(
             'SELECT ficheFrais.mois FROM ficheFrais '
             . 'WHERE ficheFrais.mois = :unMois '
-            . 'AND ficheFrais.idUserPK= :unIdUser'
+            . 'AND ficheFrais.idUserFK= :unIdUser'
         );
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unIdUser', $idUser, PDO::PARAM_STR);
@@ -332,7 +332,7 @@ class PdoGsb
         $requetePrepare = PdoGsb::$monPdo->prepare(
             'SELECT MAX(mois) as dernierMois '
             . 'FROM ficheFrais '
-            . 'WHERE ficheFrais.idUserPK = :unIdUser'
+            . 'WHERE ficheFrais.idUserFK = :unIdUser'
         );
         $requetePrepare->bindParam(':unIdUser', $idUser, PDO::PARAM_STR);
         $requetePrepare->execute();
@@ -362,9 +362,9 @@ class PdoGsb
             $this->majEtatFicheFrais($idUser, $dernierMois, 'CL');
         }
         $requetePrepare = PdoGsb::$monPdo->prepare(
-            'INSERT INTO ficheFrais (idUserFK,mois,nbjustificatifs,'
-            . 'montantvalide,datemodif,idetat) '
-            . "VALUES (:unIdUser,:unMois,0,0,now(),'CR')"
+            'INSERT INTO ficheFrais (idUserFK, mois, nbjustificatifs,'
+            . 'montantvalide, datemodif, idEtatFK) '
+            . "VALUES (:unIdUser, :unMois, 0, 0, now(), 'CR')"
         );
         $requetePrepare->bindParam(':unIdUser', $idUser, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
@@ -471,7 +471,7 @@ class PdoGsb
     public function getLesInfosFicheFrais($idUser, $mois)
     {
         $requetePrepare = PdoGSB::$monPdo->prepare(
-            'SELECT ficheFrais.idEtatPK as idEtat, '
+            'SELECT ficheFrais.idEtatFK as idEtat, '
             . 'ficheFrais.dateModif as dateModif,'
             . 'ficheFrais.nbJustificatifs as nbJustificatifs, '
             . 'ficheFrais.montantValide as montantValide, '
