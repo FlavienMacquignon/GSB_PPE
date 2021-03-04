@@ -95,6 +95,7 @@ switch ($action) {
         /*
          * Affichage des éléments de Frais
          */
+        // FIXME  ajouter un test sur les valeurs en retour et throw une page d'erreur si les valeurs sont vides
         $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($leVisiteur, $leMois);
         $lesFraisForfait = $pdo->getLesFraisForfait($leVisiteur, $leMois);
         $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($leVisiteur, $leMois);
@@ -104,8 +105,11 @@ switch ($action) {
         $montantValide = $lesInfosFicheFrais['montantValide'];
         $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
         $dateModif = dateAnglaisVersFrancais($lesInfosFicheFrais['dateModif']);
-        //TODO modifier l'include ici pour pouvoir effectuer des modifications dans la fiche de frais
-        include 'vues/v_etatFrais.php';
+        //FIXME modifier l'include ici pour pouvoir effectuer des modifications dans la fiche de frais
+        include 'vues/v_Comptables/v_ficheFrais_c.php';
+        //TODO ajouter la possibilité de supprimer des frais hors forfait
+        //TODO ajouter la possibilité de modifier les frais forfaitisés
+        //TODO ajouter la possibilité de valider la fiche ==> C'est un immense formulaire==> La fiche est passée à l'état "Validée"
         break;
 }
 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idUser, $mois);
