@@ -60,16 +60,27 @@ switch ($action) {
 
     case 'choixFrais':
         $lesVisiteurs = $pdo->getTousLesVisiteurs();
-        foreach ($lesVisiteurs as $unVisiteur) {
-            //FIXME $lesMois est un array d'array où l'array de second niveau est un couple idVisiteur / Mois -> Comme etatFrais
-            $lesMois[$unVisiteur['id']] = $pdo->getLesMoisDisponibles($unVisiteur['id']);
-            //FIXME ceci ne fonctionne plus, je n'accède plus aux meme valeurs ici que pour etatFrais(2L)
-            $lesCles = array_keys($lesMois);
-            $moisASelectionner = $lesCles[0];
-        }
+        $lesMois[] = $pdo->getTousLesMoisDisponibles();
+        $lesCles = array_keys($lesMois);
+        $moisASelectionner = $lesCles[0];
+        include 'vues/v_Comptables/v_validerFrais_c.php';
         break;
 
     case 'validerFrais':
+
+        /*
+         * DropDown
+         */
+
+        $lesVisiteurs = $pdo->getTousLesVisiteurs();
+        $lesMois[] = $pdo->getTousLesMoisDisponibles();
+        $lesCles = array_keys($lesMois);
+        $moisASelectionner = $lesCles[0];
+        include 'vues/v_Comptables/v_validerFrais_c.php';
+
+        /*
+         * Récupération du formulaire
+         */
         $leVisiteur = filter_input(INPUT_POST, "lstVisiteur", FILTER_SANITIZE_STRING);
         $leMois = filter_input(INPUT_POST, "lstMoisVisiteur", FILTER_SANITIZE_STRING);
         if (is_null($leVisiteur) || is_null($leMois)) {
@@ -80,14 +91,26 @@ switch ($action) {
                 ajouterErreur('Un problème est survenu dans la sélection du mois');
             }
         }
+
+        /*
+         * Affichage des éléments de Frais
+         */
+        $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($leVisiteur, $leMois);
+        $lesFraisForfait = $pdo->getLesFraisForfait($leVisiteur, $leMois);
+        $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($leVisiteur, $leMois);
+        $numAnnee = substr($leMois, 0, 4);
+        $numMois = substr($leMois, 4, 2);
+        $libEtat = $lesInfosFicheFrais['libEtat'];
+        $montantValide = $lesInfosFicheFrais['montantValide'];
+        $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
+        $dateModif = dateAnglaisVersFrancais($lesInfosFicheFrais['dateModif']);
+        //TODO modifier l'include ici pour pouvoir effectuer des modifications dans la fiche de frais
+        include 'vues/v_etatFrais.php';
         break;
 }
 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idUser, $mois);
 $lesFraisForfait = $pdo->getLesFraisForfait($idUser, $mois);
-// FIXME Page saisieFrais invalide --> Problème de PDO (Nouvelles Tables)
 if ($_SESSION['role'] == 1) {
     require 'vues/v_listeFraisForfait.php';
     require 'vues/v_listeFraisHorsForfait.php';
-} elseif ($_SESSION['role'] == 2) {
-    require 'vues/v_Comptables/v_validerFrais_c.php';
 }

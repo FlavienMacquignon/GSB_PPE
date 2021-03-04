@@ -37,11 +37,14 @@
                 <label for="lstMoisVisiteur" accesskey="n">Mois: </label>
                 <select id="lstMoisVisiteur" name="lstMoisVisiteur" class="form-control">
                     <?php
-                    foreach ($lesMois as $unMois) {
-                        $mois = $unMois['mois'];
-                        $numAnnee = $unMois['numAnnee'];
-                        $numMois = $unMois['numMois'];
-                        if ($mois == $moisASelectionner) {
+                        foreach ($lesMois as $unMois)
+                        {
+                            $numAnnee= $unMois[0];
+                            $numMois= $unMois[0];
+                            $numAnnee= substr($numAnnee,0, 4);
+                            $numMois= substr($numMois,4);
+
+                        if ($unMois == $moisASelectionner) {
                             ?>
                             <option selected value="<?php echo $moisASelectionner ?>">
                                 <?php echo $numMois . '/' . $numAnnee ?>
