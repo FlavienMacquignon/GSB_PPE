@@ -124,8 +124,6 @@ class PdoGsb
             . 'WHERE userTable.idRole = 1'
         );
         $requetePrepare->execute();
-        // FIXME vérifier cette ligne
-        // return $requetePrepare->fetch();
         $k=0;
         $lesVisiteurs=array();
         while($uneLigne=$requetePrepare->fetch()){
@@ -420,8 +418,8 @@ class PdoGsb
     public function supprimerFraisHorsForfait($idFrais)
     {
         $requetePrepare = PdoGSB::$monPdo->prepare(
-            'DELETE FROM lignefraishorsforfait '
-            . 'WHERE lignefraishorsforfait.id = :unIdFrais'
+            'DELETE FROM ligneFraisHorsForfait '
+            . 'WHERE ligneFraisHorsForfait.idLigneFraisHorsForfaitPK = :unIdFrais'
         );
         $requetePrepare->bindParam(':unIdFrais', $idFrais, PDO::PARAM_STR);
         $requetePrepare->execute();
@@ -458,6 +456,29 @@ class PdoGsb
         return $lesMois;
     }
 
+    /**
+     * Retourne tous les mois contenant une fiches de frais
+     * @param none
+     *
+     * @return un tableau contenant les mois -aaaamm- où une fiche de frais est présente
+     */
+    public function getTousLesMoisDisponibles()
+    {
+        $requetePreapare = PdoGsb::$monPdo->prepare(
+            'SELECT ficheFrais.mois AS mois '
+            .'FROM ficheFrais '
+            .'ORDER BY ficheFrais.mois desc '
+        );
+        $lesMois= array();
+        $k=0;
+        $requetePreapare->execute();
+        while($laLigne=$requetePreapare->fetch()){
+            $lesMois[$k]=$laLigne['mois'];
+            $k++;
+        }
+        return $lesMois;
+
+    }
     /**
      * Retourne les informations d'une fiche de frais d'un visiteur pour un
      * mois donné
