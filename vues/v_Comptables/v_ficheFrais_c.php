@@ -11,16 +11,67 @@
  */
 ?>
 <!-- <hr> est utilisé ici pour marquer le changement entre les deux parties de la page (cf v_etatFrais.php)-->
-<hr>
+<hr xmlns="http://www.w3.org/1999/html">
+<h2 class="text-primary">Valider la fiche de frais</h2>
 <div>
-    <div>Eléments forfaitisés</div>
-    <form><?php
-        foreach ($lesFraisForfait as $unFraisForfait){
-            $libelle= $unFraisForfait['libelle']; ?>
-        <label for="<?php echo $libelle?>"><?php echo $libelle?></label><br>
-        <input type="number" id="<?php echo $libelle?>" name="<?php echo $libelle?>"
-               value="<?php echo $unFraisForfait['quantite']?>"></input>
-    <?php
-        }
-    ?></form>
+    <form>
+        <div>
+            <div>Eléments forfaitisés</div>
+            <?php
+            foreach ($lesFraisForfait as $unFraisForfait) {
+                $libelle = $unFraisForfait['libelle']; ?>
+                <label for="<?php echo $libelle ?>"><?php echo $libelle ?></label><br>
+                <input type="number" id="<?php echo $libelle ?>" name="<?php echo $libelle ?>"
+                       value="<?php echo $unFraisForfait['quantite'] ?>"></input></br>
+                <?php
+                // TODO inclure deux boutons ici (Corriger et Réinitialiser)
+            }
+            ?>
+        </div>
+        </br>
+        </br>
+        <!-- FIXME CSS est bleu ici, problématique d'héritage entre les panels-->
+        <div class="panel panel-info">
+            <div class="panel-heading">Descriptif des éléments hors forfait -
+                <?php echo $nbJustificatifs ?> justificatifs reçus
+            </div>
+            <table class="table table-bordered table-responsive">
+                <tr>
+                    <th class="date">Date</th>
+                    <th class="libelle">Libellé</th>
+                    <th class='montant'>Montant</th>
+                </tr>
+                <?php
+                $k = 0;
+                foreach ($lesFraisHorsForfait as $unFraisHorsForfait) {
+                    $date = $unFraisHorsForfait['date'];
+                    $libelle = htmlspecialchars($unFraisHorsForfait['libelle']);
+                    $montant = $unFraisHorsForfait['montant']; ?>
+                    <tr>
+                        <td>
+                            <label for="<?php echo $date ?>"></label>
+                            <input type="text" id="<?php echo $date ?>"
+                                   name="<?php echo("FraisHorsForfait" . $k) ?>"
+                                   value="<?php echo $date ?> ">
+                        </td>
+                        <td>
+                            <label for="<?php echo $libelle . $date ?>"></label>
+                            <input type="text" id="<?php echo $libelle . $date ?>"
+                                   name="<?php echo("FraisHorsForfait" . $k) ?>" value="<?php echo $libelle ?> ">
+                        </td>
+                        <td>
+                            <label for="<?php echo $montant . $date ?>"></label>
+                            <input type="text" id="<?php echo $montant . $date ?>"
+                                   name="<?php echo("FraisHorsForfait" . $k) ?>" value="<?php echo $montant ?>">
+                        </td>
+                        <!-- TODO inclure pour chaque ligne deux boutons-->
+                    </tr>
+                    <?php
+                    $k++;
+                }
+                ?>
+            </table>
+        </div>
+    </form>
+    <!-- TODO inclue deux boutons ici, corriger et réinitialiser -->
 </div>

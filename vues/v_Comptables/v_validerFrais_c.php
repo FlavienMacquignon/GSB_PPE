@@ -9,7 +9,6 @@
  * @author Flavien Macquignon <flavien.macquignon@fastmail.fr>
  */
 ?>
-<h2>Valider les fiches de Frais</h2>
 <div class="row">
     <div class="col-md-4">
         <h3>Sélectionner un visiteur: </h3>
