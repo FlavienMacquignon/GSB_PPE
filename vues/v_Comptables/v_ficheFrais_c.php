@@ -14,7 +14,8 @@
 <hr xmlns="http://www.w3.org/1999/html">
 <h2 class="text-primary">Valider la fiche de frais</h2>
 <div>
-    <form>
+    <form method="post" action="index.php?uc=gererFrais&action=soumettreFrais"
+          role="form" id="form">
         <div>
             <div>Eléments forfaitisés</div>
             <?php
@@ -27,10 +28,10 @@
                 // TODO inclure deux boutons ici (Corriger et Réinitialiser)
             }
             ?>
+            <button Class="btn btn-danger" id="Corriger" type="reset"">Réinitialiser</button>
         </div>
         </br>
         </br>
-        <!-- FIXME CSS est bleu ici, problématique d'héritage entre les panels-->
         <div class="panel panel-info">
             <div class="panel-heading">Descriptif des éléments hors forfait -
                 <?php echo $nbJustificatifs ?> justificatifs reçus
@@ -72,6 +73,10 @@
                 ?>
             </table>
         </div>
+        </br>
+        </br>
+        <button class="btn btn-success" id="submit_btn" type="submit" value="uc=">Valider</button>
+        <button class="btn btn-danger" id="btn_corriger_page" type="reset">Réinitialiser</button>
     </form>
-    <!-- TODO inclue deux boutons ici, corriger et réinitialiser -->
+    <!-- TODO inclure deux boutons ici, corriger et réinitialiser -->
 </div>

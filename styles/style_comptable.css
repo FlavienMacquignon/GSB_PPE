@@ -258,11 +258,13 @@ a.thumbnail.active {
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
     box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 }
+
+/* FIXME Change text color inside heading to be lisible */
 .panel-primary {
     border-color: #f88813;
 }
 .panel-primary > .panel-heading {
-    color: #ffffff;
+    color: #F68713;
     background-color: #f88813;
     border-color: #f88813;
 }
@@ -271,7 +273,7 @@ a.thumbnail.active {
 }
 .panel-primary > .panel-heading .badge {
     color: #f88813;
-    background-color: #ffffff;
+    background-color: #F68713;
 }
 .panel-primary > .panel-footer + .panel-collapse > .panel-body {
     border-bottom-color: #f88813;
@@ -281,14 +283,14 @@ a.thumbnail.active {
 }
 .panel-info > .panel-heading {
     color: #f9942c;
-    background-color: white;
+    background-color: #F68713;
     border-color: #fcc995;
 }
 .panel-info > .panel-heading + .panel-collapse > .panel-body {
     border-top-color: #fcd4aa;
 }
 .panel-info > .panel-heading .badge {
-    color: #FEF4E9;
+    color: #F68713;
     background-color: #f88813;
 }
 .panel-info > .panel-footer + .panel-collapse > .panel-body {

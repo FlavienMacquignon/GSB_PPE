@@ -20,7 +20,6 @@
                 <label for="lstVisiteur" accesskey="n">Visiteur: </label>
                 <select id="lstVisiteur" name="lstVisiteur" class="form-control">
                     <?php
-                    // TODO placer les deux dropdown l'un à coté de l'autre
                     foreach ($lesVisiteurs as $unVisiteur) {
                         $idVisiteur = $unVisiteur['id'];
                         $prenom = $unVisiteur['prenom'];
@@ -33,6 +32,7 @@
                     } ?>
                 </select>
             </div>
+            <!-- FIXME mettre cette dropdown "aside" -->
             <div id="hd-lstMois" class="form-group">
                 <label for="lstMoisVisiteur" accesskey="n">Mois: </label>
                 <select id="lstMoisVisiteur" name="lstMoisVisiteur" class="form-control">

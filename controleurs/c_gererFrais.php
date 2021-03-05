@@ -111,6 +111,10 @@ switch ($action) {
         //TODO ajouter la possibilité de modifier les frais forfaitisés
         //TODO ajouter la possibilité de valider la fiche ==> C'est un immense formulaire==> La fiche est passée à l'état "Validée"
         break;
+
+    case "soumettreFrais":
+        echo("fiche_validée");
+        break;
 }
 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idUser, $mois);
 $lesFraisForfait = $pdo->getLesFraisForfait($idUser, $mois);
