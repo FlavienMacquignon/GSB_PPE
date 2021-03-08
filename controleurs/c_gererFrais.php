@@ -83,6 +83,8 @@ switch ($action) {
          */
         $leVisiteur = filter_input(INPUT_POST, "lstVisiteur", FILTER_SANITIZE_STRING);
         $leMois = filter_input(INPUT_POST, "lstMoisVisiteur", FILTER_SANITIZE_STRING);
+        $_SESSION['leVisiteur'] = $leVisiteur;
+        $_SESSION['leMois'] = $leMois;
         if (is_null($leVisiteur) || is_null($leMois)) {
             if (is_null($leVisiteur)) {
                 ajouterErreur('Un problème est survenu lors de la sélection du visiteur');
@@ -113,7 +115,44 @@ switch ($action) {
         break;
 
     case "soumettreFrais":
-        echo("fiche_validée");
+        $leVisiteur = $_SESSION['leVisiteur'];
+        $leMois = $_SESSION['leMois'];
+        $k = $_SESSION['tailleFrais'];
+        unset($_SESSION['leMois']);
+        unset($_SESSION['leVisiteur']);
+        unset($_SESSION['tailleFrais']);
+        $lesFraisForfait = filter_input(INPUT_POST, "lesFraisForfait", FILTER_DEFAULT, FILTER_FORCE_ARRAY);
+        // FIXME récupérer l'idUser depuis la vue; ici j'essaye d'enregistrer la fiche sur l'userComptable
+        $pdo->majFraisForfait($leVisiteur, $mois, $lesFraisForfait);
+        $lesFraisHF = $pdo->getLesFraisHorsForfait($leVisiteur, $leMois);
+
+            $lesNouveauxFraisHF = array(
+                // INFO this is my key
+                'idLigneFraisHorsForfaitPK' => null,
+                'idUserFK' => null,
+                'mois' => null,
+                'libelle' => null,
+                'date' => null,
+                'montant' => null
+            );
+
+            foreach ($lesFraisHF as $unFraisHorsForfait) {
+                // FIXME trouver un moyen de remplir l'array meme si je n'ai plus d'id
+                $idFraisHorsForfait = $unFraisHorsForfait['idLigneFraisHorsForfaitPK'];
+                $date = $unFraisHorsForfait['date'];
+                $libelle = $unFraisHorsForfait['libelle'];
+                $montant = $unFraisHorsForfait['montant'];
+
+                $lesNouveauxFraisHF['idLigneFraisHorsForfaitPK'] = $idFraisHorsForfait;
+                $lesNouveauxFraisHF['idUserFK'] = $leVisiteur;
+                $lesNouveauxFraisHF['mois'] = $leMois;
+                $lesNouveauxFraisHF['libelle'] = filter_input(INPUT_POST, $idFraisHorsForfait . '$' . $libelle, FILTER_SANITIZE_STRING);
+                $lesNouveauxFraisHF['date'] = filter_input(INPUT_POST, $idFraisHorsForfait . '$' . $date, FILTER_SANITIZE_STRING);
+                $lesNouveauxFraisHF['montant'] = filter_input(INPUT_POST, $idFraisHorsForfait . '$' . $montant, FILTER_SANITIZE_STRING);
+            }
+        }
+        $pdo->majFraisHF($lesNouveauxFraisHF);
+
         break;
 }
 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idUser, $mois);

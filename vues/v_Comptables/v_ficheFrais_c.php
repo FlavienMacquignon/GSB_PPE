@@ -20,15 +20,19 @@
             <div>Eléments forfaitisés</div>
             <?php
             foreach ($lesFraisForfait as $unFraisForfait) {
-                $libelle = $unFraisForfait['libelle']; ?>
+                $libelle = $unFraisForfait['libelle'];
+                $idFrais = $unFraisForfait['idfrais']; ?>
                 <label for="<?php echo $libelle ?>"><?php echo $libelle ?></label><br>
-                <input type="number" id="<?php echo $libelle ?>" name="<?php echo $libelle ?>"
+                <input type="number" id="<?php echo $libelle ?>" name="lesFraisForfait[<?php echo $idFrais ?>]"
                        value="<?php echo $unFraisForfait['quantite'] ?>"></input></br>
                 <?php
-                // TODO inclure deux boutons ici (Corriger et Réinitialiser)
+
             }
             ?>
-            <button Class="btn btn-danger" id="Corriger" type="reset"">Réinitialiser</button>
+            <!-- TODO créer un bouton de soumission de formulaire qui ne trigger une mise à jour
+            que des FraisForfait en ne récupérant que certaines variables-->
+            <button Class="btn btn-danger" id="Corriger" type="reset"> Réinitialiser
+            </button>
         </div>
         </br>
         </br>
@@ -43,32 +47,33 @@
                     <th class='montant'>Montant</th>
                 </tr>
                 <?php
-                $k = 0;
+                $_SESSION['tailleFrais']=0;
                 foreach ($lesFraisHorsForfait as $unFraisHorsForfait) {
+                    $idFraisHorsForfait = $unFraisHorsForfait['idLigneFraisHorsForfaitPK'];
                     $date = $unFraisHorsForfait['date'];
                     $libelle = htmlspecialchars($unFraisHorsForfait['libelle']);
                     $montant = $unFraisHorsForfait['montant']; ?>
                     <tr>
                         <td>
-                            <label for="<?php echo $date ?>"></label>
-                            <input type="text" id="<?php echo $date ?>"
-                                   name="<?php echo("FraisHorsForfait" . $k) ?>"
+                            <label for="<?php echo $idFraisHorsForfait.'$'. $date ?>"></label>
+                            <input type="text" id="<?php echo $idFraisHorsForfait.'$'.$date ?>"
+                                   name="<?php echo $idFraisHorsForfait .'$'. $date ?>]"
                                    value="<?php echo $date ?> ">
                         </td>
                         <td>
-                            <label for="<?php echo $libelle . $date ?>"></label>
-                            <input type="text" id="<?php echo $libelle . $date ?>"
-                                   name="<?php echo("FraisHorsForfait" . $k) ?>" value="<?php echo $libelle ?> ">
+                            <label for="<?php echo $idFraisHorsForfait.'$'.$libelle ?>"></label>
+                            <input type="text" id="<?php echo $idFraisHorsForfait.'$'.$libelle ?>"
+                                   name="<?php echo($idFraisHorsForfait .'$'. $libelle) ?>" value="<?php echo $libelle ?> ">
                         </td>
                         <td>
-                            <label for="<?php echo $montant . $date ?>"></label>
-                            <input type="text" id="<?php echo $montant . $date ?>"
-                                   name="<?php echo("FraisHorsForfait" . $k) ?>" value="<?php echo $montant ?>">
+                            <label for="<?php echo $idFraisHorsForfait.'$'.$montant ?>"></label>
+                            <input type="text" id="<?php echo $idFraisHorsForfait.'$'.$montant ?>"
+                                   name="<?php echo($idFraisHorsForfait .'$'. $montant) ?>" value="<?php echo $montant ?>">
                         </td>
                         <!-- TODO inclure pour chaque ligne deux boutons-->
                     </tr>
                     <?php
-                    $k++;
+                    $_SESSION['tailleFrais']++;
                 }
                 ?>
             </table>
