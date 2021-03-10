@@ -33,7 +33,8 @@
                 $libelle = htmlspecialchars($unFraisHorsForfait['libelle']);
                 $date = $unFraisHorsForfait['date'];
                 $montant = $unFraisHorsForfait['montant'];
-                $id = $unFraisHorsForfait['id']; ?>           
+                // FIXME référencer la bonne colone, ce n'est plus 'id'
+                $id = $unFraisHorsForfait['id']; ?>
                 <tr>
                     <td> <?php echo $date ?></td>
                     <td> <?php echo $libelle ?></td>

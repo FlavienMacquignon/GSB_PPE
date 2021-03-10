@@ -47,33 +47,33 @@
                     <th class='montant'>Montant</th>
                 </tr>
                 <?php
-                $_SESSION['tailleFrais']=0;
                 foreach ($lesFraisHorsForfait as $unFraisHorsForfait) {
                     $idFraisHorsForfait = $unFraisHorsForfait['idLigneFraisHorsForfaitPK'];
-                    $date = $unFraisHorsForfait['date'];
+                    $date = htmlspecialchars($unFraisHorsForfait['date']);
                     $libelle = htmlspecialchars($unFraisHorsForfait['libelle']);
-                    $montant = $unFraisHorsForfait['montant']; ?>
+                    $montant = htmlspecialchars($unFraisHorsForfait['montant']); ?>
                     <tr>
                         <td>
-                            <label for="<?php echo $idFraisHorsForfait.'$'. $date ?>"></label>
-                            <input type="text" id="<?php echo $idFraisHorsForfait.'$'.$date ?>"
-                                   name="<?php echo $idFraisHorsForfait .'$'. $date ?>]"
+                            <label for="<?php echo $idFraisHorsForfait.'$'.$date ?>"></label>
+                            <input type="text" id="<?php echo $idFraisHorsForfait.'$DATE' ?>"
+                                   name="<?php echo $idFraisHorsForfait.'$DATE' ?>"
                                    value="<?php echo $date ?> ">
                         </td>
                         <td>
                             <label for="<?php echo $idFraisHorsForfait.'$'.$libelle ?>"></label>
-                            <input type="text" id="<?php echo $idFraisHorsForfait.'$'.$libelle ?>"
-                                   name="<?php echo($idFraisHorsForfait .'$'. $libelle) ?>" value="<?php echo $libelle ?> ">
+                            <input type="text" id="<?php echo $idFraisHorsForfait .'$LIBELLE' ?>"
+                                   name="<?php echo($idFraisHorsForfait .'$LIBELLE') ?>"
+                                   value="<?php echo $libelle ?> ">
                         </td>
                         <td>
                             <label for="<?php echo $idFraisHorsForfait.'$'.$montant ?>"></label>
-                            <input type="text" id="<?php echo $idFraisHorsForfait.'$'.$montant ?>"
-                                   name="<?php echo($idFraisHorsForfait .'$'. $montant) ?>" value="<?php echo $montant ?>">
+                            <input type="text" id="<?php echo $idFraisHorsForfait.'$MONTANT' ?>"
+                                   name="<?php echo $idFraisHorsForfait.'$MONTANT' ?>"
+                                   value="<?php echo $montant ?> ">
                         </td>
                         <!-- TODO inclure pour chaque ligne deux boutons-->
                     </tr>
                     <?php
-                    $_SESSION['tailleFrais']++;
                 }
                 ?>
             </table>

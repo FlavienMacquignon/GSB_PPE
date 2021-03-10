@@ -116,7 +116,7 @@ class PdoGsb
             'SELECT userTable.idUserPK AS id, '
             . 'userTable.nom AS nom, '
             . 'userTable.prenom AS prenom '
-            . 'FROM gsb_frais.userTable '
+            . 'FROM gsb_frais_test.userTable '
             . 'WHERE userTable.idRole = 1'
         );
         $requetePrepare->execute();
@@ -402,6 +402,39 @@ class PdoGsb
         $requetePrepare->bindParam(':uneDateFr', $dateFr, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMontant', $montant, PDO::PARAM_INT);
         $requetePrepare->execute();
+    }
+
+    /**
+     * TODO peupler cette documentation
+     * @return null
+     */
+    public function majFraisHF ($lesNouveauxFraisHF)
+    {
+
+        for ($i=0; $i<=sizeof($lesNouveauxFraisHF);$i++) {
+            // FIXME vérifier la date
+
+            $dateFr = dateFrancaisVersAnglais($lesNouveauxFraisHF[$i]['date']);
+            $requetePrepare = PdoGsb::$monPdo->prepare(
+                'UPDATE ligneFraisHorsForfait '
+                . 'SET  ligneFraisHorsForfait.libelle = :unLibelle, '
+                . 'ligneFraisHorsForfait.date = :uneDateFr, '
+                . 'ligneFraisHorsForfait.montant = :unMontant '
+                . 'WHERE ligneFraisHorsForfait.idLigneFraisHorsForfaitPK = :unIdFraisHorsForfait '
+                . 'AND ligneFraisHorsForfait.idUserFk = :unIdUser'
+            );
+            $leLibelle = $lesNouveauxFraisHF[$i]['libelle'];
+            $leMontant= $lesNouveauxFraisHF[$i]['montant'];
+            $idFrais=$lesNouveauxFraisHF[$i]['idLigneFraisHorsForfaitPK'];
+            $idUser= $lesNouveauxFraisHF[$i]['idUserFK'];
+            $requetePrepare->bindParam(':unLibelle', $leLibelle , PDO::PARAM_STR);
+            $requetePrepare->bindParam(':uneDateFr', $dateFr, PDO::PARAM_STR);
+            $requetePrepare->bindParam(':unMontant', $leMontant, PDO::PARAM_INT);
+            $requetePrepare->bindParam(':unIdFraisHorsForfait', $idFrais, PDO::PARAM_INT);
+            $requetePrepare->bindParam(':unIdUser', $idUser, PDO::PARAM_STR);
+            $requetePrepare->execute();
+        }
+
     }
 
     /**
