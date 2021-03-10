@@ -55,7 +55,31 @@ switch ($action) {
         break;
     case 'supprimerFrais':
         $idFrais = filter_input(INPUT_GET, 'idFrais', FILTER_SANITIZE_STRING);
-        $pdo->supprimerFraisHorsForfait($idFrais);
+        if ($_SESSION['role'] == 1) {
+            $pdo->supprimerFraisHorsForfait($idFrais);
+        } else {
+            $leFraisHorsForfait = $pdo->getLeFraisHorsForfait($idFrais);
+            $leFraisHorsForfait['libelle']='REFUSE'.$leFraisHorsForfait['libelle'];
+            if(strlen($leFraisHorsForfait['libelle'])>100){
+                $leFraisHorsForfait['libelle']=$leFraisHorsForfait['libelle'].substr(0, 0,100);
+            }
+            $leFraisHorsForfait['mois']=$leFraisHorsForfait['mois']+1;
+            if(substr($leFraisHorsForfait['mois'],-2)>12)
+            {
+                $numAnnee=substr($leFraisHorsForfait['mois'], 0,-2)+1;
+                $leFraisHorsForfait=$numAnnee.'01';
+            }
+            $pdo->creeNouvellesLignesFrais($leFraisHorsForfait['visiteur'],$leFraisHorsForfait['mois']);
+            //FIXME je ne peux pas créer une fiche HF sans une FicheFrais
+            $pdo->creeNouveauFraisHorsForfait(
+                $leFraisHorsForfait['visiteur'],
+                $leFraisHorsForfait['mois'],
+                $leFraisHorsForfait['libelle'],
+                dateAnglaisVersFrancais($leFraisHorsForfait['date']),
+                $leFraisHorsForfait['montant']
+            );
+            $pdo->supprimerFraisHorsForfait($idFrais);
+        }
         break;
 
     case 'choixFrais':
@@ -137,12 +161,37 @@ switch ($action) {
             $lesNouveauxFraisHF[$k]['idLigneFraisHorsForfaitPK'] = $idFraisHorsForfait;
             $lesNouveauxFraisHF[$k]['idUserFK'] = $leVisiteur;
             $lesNouveauxFraisHF[$k]['mois'] = $leMois;
-            $lesNouveauxFraisHF[$k]['libelle'] = filter_input(INPUT_POST, $idFraisHorsForfait .'$LIBELLE', FILTER_SANITIZE_STRING);
-            $lesNouveauxFraisHF[$k]['date'] = filter_input(INPUT_POST, $idFraisHorsForfait.'$DATE', FILTER_SANITIZE_STRING);
-            $lesNouveauxFraisHF[$k]['montant'] = filter_input(INPUT_POST, $idFraisHorsForfait.'$MONTANT', FILTER_VALIDATE_FLOAT);
+            $lesNouveauxFraisHF[$k]['libelle'] = filter_input(INPUT_POST, $idFraisHorsForfait . '$LIBELLE', FILTER_SANITIZE_STRING);
+            $lesNouveauxFraisHF[$k]['date'] = filter_input(INPUT_POST, $idFraisHorsForfait . '$DATE', FILTER_SANITIZE_STRING);
+            $lesNouveauxFraisHF[$k]['montant'] = filter_input(INPUT_POST, $idFraisHorsForfait . '$MONTANT', FILTER_VALIDATE_FLOAT);
             $k++;
         }
         $pdo->majFraisHF($lesNouveauxFraisHF);
+        $nbJustificatifs=filter_input(INPUT_POST, 'nbJustificatifs', FILTER_SANITIZE_STRING );
+        $pdo->majNbJustificatifs($leVisiteur, $leMois,$nbJustificatifs);
+        break;
+
+    case "reporterFrais":
+        $idFrais=filter_input(INPUT_POST, 'btn_reporter', FILTER_SANITIZE_STRING);
+        $leFraisHorsForfait = $pdo->getLeFraisHorsForfait($idFrais);
+        if(strlen($leFraisHorsForfait['libelle'])>100){
+            $leFraisHorsForfait['libelle']=$leFraisHorsForfait['libelle'].substr(0, 0,100);
+        }
+        $leFraisHorsForfait['mois']=$leFraisHorsForfait['mois']+1;
+        if(substr($leFraisHorsForfait['mois'],-2)>12)
+        {
+            $numAnnee=substr($leFraisHorsForfait['mois'], 0,-2)+1;
+            $leFraisHorsForfait=$numAnnee.'01';
+        }
+        $pdo->creeNouvellesLignesFrais($leFraisHorsForfait['visiteur'],$leFraisHorsForfait['mois']);
+        $pdo->creeNouveauFraisHorsForfait(
+            $leFraisHorsForfait['visiteur'],
+            $leFraisHorsForfait['mois'],
+            $leFraisHorsForfait['libelle'],
+            dateAnglaisVersFrancais($leFraisHorsForfait['date']),
+            $leFraisHorsForfait['montant']
+        );
+        $pdo->supprimerFraisHorsForfait($idFrais);
         break;
 }
 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idUser, $mois);

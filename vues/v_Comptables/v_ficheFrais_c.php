@@ -71,7 +71,12 @@
                                    name="<?php echo $idFraisHorsForfait.'$MONTANT' ?>"
                                    value="<?php echo $montant ?> ">
                         </td>
-                        <!-- TODO inclure pour chaque ligne deux boutons-->
+                        <td>
+                            <button class="btn btn-danger" id="btn_corriger" type="reset">Réinitialiser</button>
+                            <button class="btn btn-danger" id="btn_reporter" type="submit" value="index.php?uc=gererFrais&action=reporterFrais&idFrais="<?php echo $idFraisHorsForfait ?> ">Reporter</button>
+                            <a href="index.php?uc=gererFrais&action=supprimerFrais&idFrais=<?php echo $idFraisHorsForfait ?>"
+                               onclick="return confirm('Voulez-vous vraiment supprimer ce frais?');">Supprimer ce frais</a>
+                        </td>
                     </tr>
                     <?php
                 }
@@ -80,8 +85,11 @@
         </div>
         </br>
         </br>
-        <button class="btn btn-success" id="submit_btn" type="submit" value="uc=">Valider</button>
+        <input type="text" id="nbJustificatifs" name="nbJustificatifs" value="<?php echo $nbJustificatifs?>">
+    <div>
+        <button class="btn btn-success" id="submit_btn" type="submit">Valider</button>
         <button class="btn btn-danger" id="btn_corriger_page" type="reset">Réinitialiser</button>
+    </div>
     </form>
-    <!-- TODO inclure deux boutons ici, corriger et réinitialiser -->
+
 </div>

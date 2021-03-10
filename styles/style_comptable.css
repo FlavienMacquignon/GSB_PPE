@@ -257,6 +257,7 @@ a.thumbnail.active {
     border-radius: 4px;
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
     box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    color:#FFFFFF;
 }
 
 /* FIXME Change text color inside heading to be lisible */
@@ -282,7 +283,7 @@ a.thumbnail.active {
     border-color: #f9942c;
 }
 .panel-info > .panel-heading {
-    color: #f9942c;
+    color: #FFFFFF;
     background-color: #F68713;
     border-color: #fcc995;
 }
@@ -290,7 +291,7 @@ a.thumbnail.active {
     border-top-color: #fcd4aa;
 }
 .panel-info > .panel-heading .badge {
-    color: #F68713;
+    color: #FFFFFF;
     background-color: #f88813;
 }
 .panel-info > .panel-footer + .panel-collapse > .panel-body {

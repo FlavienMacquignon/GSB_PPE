@@ -167,6 +167,24 @@ class PdoGsb
     }
 
     /**
+     * TODO documentation à remplir
+     */
+    public function getLeFraisHorsForfait($idFraisHorsForfait){
+        $requetePrepare= PdoGsb::$monPdo->prepare(
+            'SELECT ligneFraisHorsForfait.idUserFK AS visiteur, '
+            .'ligneFraisHorsForfait.mois AS mois, '
+            .'ligneFraisHorsForfait.libelle AS libelle, '
+            .'ligneFraisHorsForfait.date AS date, '
+            .'ligneFraisHorsForfait.montant AS montant '
+            .'FROM ligneFraisHorsForfait '
+            .'WHERE ligneFraisHorsForfait.idLigneFraisHorsForfaitPK = :idFraisHorsForfait '
+        );
+        $requetePrepare->bindParam(':idFraisHorsForfait', $idFraisHorsForfait, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        return $requetePrepare->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Retourne le nombre de justificatif d'un visiteur pour un mois donné
      *
      * @param String $idUser    ID de l'user
@@ -552,7 +570,7 @@ class PdoGsb
     {
         $requetePrepare = PdoGSB::$monPdo->prepare(
             'UPDATE ficheFrais '
-            . 'SET idEtatPK = :unEtat, dateModif = now() '
+            . 'SET idEtatFK = :unEtat, dateModif = now() '
             . 'WHERE ficheFrais.idUserFK = :unIdUser '
             . 'AND ficheFrais.mois = :unMois'
         );
