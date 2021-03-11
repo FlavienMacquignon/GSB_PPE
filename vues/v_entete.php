@@ -87,7 +87,6 @@
                                     Valider les Fiches de Frais
                                 </a>
                             </li>
-                            <!-- TODO suivitPayement ici-->
                             <li <?php if ($uc == 'suivitPayement') { ?>class="active"<?php } ?>>
                                 <a href="index.php?us=suivitPayement&action=suivit">
                                     <span class="glyphicon glyphicon-ok"></span>

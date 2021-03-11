@@ -60,17 +60,16 @@ switch ($action) {
         } else {
             $leFraisHorsForfait = $pdo->getLeFraisHorsForfait($idFrais);
             $leFraisHorsForfait['libelle']='REFUSE'.$leFraisHorsForfait['libelle'];
-            if(strlen($leFraisHorsForfait['libelle'])>100){
-                $leFraisHorsForfait['libelle']=$leFraisHorsForfait['libelle'].substr(0, 0,100);
+            if (strlen($leFraisHorsForfait['libelle'])>100){
+                $leFraisHorsForfait['libelle'] = $leFraisHorsForfait['libelle'].substr(0, 0,100);
             }
-            $leFraisHorsForfait['mois']=$leFraisHorsForfait['mois']+1;
-            if(substr($leFraisHorsForfait['mois'],-2)>12)
+            $leFraisHorsForfait['mois'] = $leFraisHorsForfait['mois'] + 1;
+            if (substr($leFraisHorsForfait['mois'],-2)>12)
             {
                 $numAnnee=substr($leFraisHorsForfait['mois'], 0,-2)+1;
-                $leFraisHorsForfait=$numAnnee.'01';
+                $leFraisHorsForfait= $numAnnee . '01';
             }
-            $pdo->creeNouvellesLignesFrais($leFraisHorsForfait['visiteur'],$leFraisHorsForfait['mois']);
-            //FIXME je ne peux pas créer une fiche HF sans une FicheFrais
+            $pdo->creeNouvellesLignesFrais($leFraisHorsForfait['visiteur'], $leFraisHorsForfait['mois']);
             $pdo->creeNouveauFraisHorsForfait(
                 $leFraisHorsForfait['visiteur'],
                 $leFraisHorsForfait['mois'],
@@ -121,21 +120,16 @@ switch ($action) {
         /*
          * Affichage des éléments de Frais
          */
-        // FIXME  ajouter un test sur les valeurs en retour et throw une page d'erreur si les valeurs sont vides
         $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($leVisiteur, $leMois);
-        $lesFraisForfait = $pdo->getLesFraisForfait($leVisiteur, $leMois);
-        $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($leVisiteur, $leMois);
+        $lesFraisForfait =     $pdo->getLesFraisForfait($leVisiteur, $leMois);
+        $lesInfosFicheFrais =  $pdo->getLesInfosFicheFrais($leVisiteur, $leMois);
         $numAnnee = substr($leMois, 0, 4);
         $numMois = substr($leMois, 4, 2);
-        $libEtat = $lesInfosFicheFrais['libEtat'];
-        $montantValide = $lesInfosFicheFrais['montantValide'];
+        $libEtat         = $lesInfosFicheFrais['libEtat'];
+        $montantValide   = $lesInfosFicheFrais['montantValide'];
         $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
         $dateModif = dateAnglaisVersFrancais($lesInfosFicheFrais['dateModif']);
-        //FIXME modifier l'include ici pour pouvoir effectuer des modifications dans la fiche de frais
         include 'vues/v_Comptables/v_ficheFrais_c.php';
-        //TODO ajouter la possibilité de supprimer des frais hors forfait
-        //TODO ajouter la possibilité de modifier les frais forfaitisés
-        //TODO ajouter la possibilité de valider la fiche ==> C'est un immense formulaire==> La fiche est passée à l'état "Validée"
         break;
 
     case "soumettreFrais":

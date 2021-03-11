@@ -116,7 +116,7 @@ class PdoGsb
             'SELECT userTable.idUserPK AS id, '
             . 'userTable.nom AS nom, '
             . 'userTable.prenom AS prenom '
-            . 'FROM gsb_frais_test.userTable '
+            . 'FROM gsb_frais.userTable '
             . 'WHERE userTable.idRole = 1'
         );
         $requetePrepare->execute();
@@ -167,7 +167,11 @@ class PdoGsb
     }
 
     /**
-     * TODO documentation à remplir
+     * Retourne la ligne de frais dont l'id est passé en paramètre sous la forme d'un tableau Associatif
+     *
+     * @param Integer $idFraisHorsForfait Id du FraisHorsForfait
+     *
+     * @return un tableau associatif du frais correspondant
      */
     public function getLeFraisHorsForfait($idFraisHorsForfait){
         $requetePrepare= PdoGsb::$monPdo->prepare(
@@ -184,27 +188,7 @@ class PdoGsb
         return $requetePrepare->fetch(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Retourne le nombre de justificatif d'un visiteur pour un mois donné
-     *
-     * @param String $idUser    ID de l'user
-     * @param String $mois       Mois sous la forme aaaamm
-     *
-     * @return le nombre entier de justificatifs
-     */
-    public function getNbjustificatifs($idUser, $mois)
-    {
-        $requetePrepare = PdoGsb::$monPdo->prepare(
-            'SELECT ficheFrais.nbjustificatifs as nb FROM ficheFrais '
-            . 'WHERE ficheFrais.idUserFK = :unIdUser '
-            . 'AND ficheFrais.mois = :unMois'
-        );
-        $requetePrepare->bindParam(':unIdUser', $idUser, PDO::PARAM_STR);
-        $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
-        $requetePrepare->execute();
-        $laLigne = $requetePrepare->fetch();
-        return $laLigne['nb'];
-    }
+
 
     /**
      * Retourne sous forme d'un tableau associatif toutes les lignes de frais
@@ -307,6 +291,28 @@ class PdoGsb
     }
 
     /**
+     * Retourne le nombre de justificatif d'un visiteur pour un mois donné
+     *
+     * @param String $idUser    ID de l'user
+     * @param String $mois       Mois sous la forme aaaamm
+     *
+     * @return le nombre entier de justificatifs
+     */
+    public function getNbjustificatifs($idUser, $mois)
+    {
+        $requetePrepare = PdoGsb::$monPdo->prepare(
+            'SELECT ficheFrais.nbjustificatifs as nb FROM ficheFrais '
+            . 'WHERE ficheFrais.idUserFK = :unIdUser '
+            . 'AND ficheFrais.mois = :unMois'
+        );
+        $requetePrepare->bindParam(':unIdUser', $idUser, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        $laLigne = $requetePrepare->fetch();
+        return $laLigne['nb'];
+    }
+
+    /**
      * Teste si un visiteur possède une fiche de frais pour le mois passé en argument
      *
      * @param String $idUser ID de l'utilisateur
@@ -361,7 +367,7 @@ class PdoGsb
      * idEtat, crée une nouvelle fiche de frais avec un idEtat à 'CR' et crée
      * les lignes de frais forfait de quantités nulles
      *
-     * @param String $idUser    ID de l'user
+     * @param String $idUser     ID de l'user
      * @param String $mois       Mois sous la forme aaaamm
      *
      * @return null
@@ -423,15 +429,16 @@ class PdoGsb
     }
 
     /**
-     * TODO peupler cette documentation
-     * @return null
+     * Met à jour un frais Hors Forfait à partir d'un tableau associatif de Frais
+     *
+     * @param mixed Un tableau associatif du Frais à modifier,
+     *              il est présenté comme une ligne de Frais l'est dans la base de données
+     *
+     * @return void
      */
     public function majFraisHF ($lesNouveauxFraisHF)
     {
-
-        for ($i=0; $i<=sizeof($lesNouveauxFraisHF);$i++) {
-            // FIXME vérifier la date
-
+        for ($i=0; $i<=sizeof($lesNouveauxFraisHF); $i++) {
             $dateFr = dateFrancaisVersAnglais($lesNouveauxFraisHF[$i]['date']);
             $requetePrepare = PdoGsb::$monPdo->prepare(
                 'UPDATE ligneFraisHorsForfait '
@@ -441,15 +448,12 @@ class PdoGsb
                 . 'WHERE ligneFraisHorsForfait.idLigneFraisHorsForfaitPK = :unIdFraisHorsForfait '
                 . 'AND ligneFraisHorsForfait.idUserFk = :unIdUser'
             );
-            $leLibelle = $lesNouveauxFraisHF[$i]['libelle'];
-            $leMontant= $lesNouveauxFraisHF[$i]['montant'];
-            $idFrais=$lesNouveauxFraisHF[$i]['idLigneFraisHorsForfaitPK'];
-            $idUser= $lesNouveauxFraisHF[$i]['idUserFK'];
-            $requetePrepare->bindParam(':unLibelle', $leLibelle , PDO::PARAM_STR);
+
+            $requetePrepare->bindParam(':unLibelle', $lesNouveauxFraisHF[$i]['libelle'] , PDO::PARAM_STR);
+            $requetePrepare->bindParam(':unMontant', $lesNouveauxFraisHF[$i]['montant'], PDO::PARAM_INT);
+            $requetePrepare->bindParam(':unIdFraisHorsForfait', $lesNouveauxFraisHF[$i]['idLigneFraisHorsForfaitPK'], PDO::PARAM_INT);
+            $requetePrepare->bindParam(':unIdUser', $lesNouveauxFraisHF[$i]['idUserFK'], PDO::PARAM_STR);
             $requetePrepare->bindParam(':uneDateFr', $dateFr, PDO::PARAM_STR);
-            $requetePrepare->bindParam(':unMontant', $leMontant, PDO::PARAM_INT);
-            $requetePrepare->bindParam(':unIdFraisHorsForfait', $idFrais, PDO::PARAM_INT);
-            $requetePrepare->bindParam(':unIdUser', $idUser, PDO::PARAM_STR);
             $requetePrepare->execute();
         }
 
@@ -526,6 +530,7 @@ class PdoGsb
         return $lesMois;
 
     }
+
     /**
      * Retourne les informations d'une fiche de frais d'un visiteur pour un
      * mois donné

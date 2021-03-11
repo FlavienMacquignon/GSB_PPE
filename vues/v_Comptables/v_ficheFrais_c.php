@@ -10,7 +10,6 @@
  * @version GIT : <0>
  */
 ?>
-<!-- <hr> est utilisé ici pour marquer le changement entre les deux parties de la page (cf v_etatFrais.php)-->
 <hr xmlns="http://www.w3.org/1999/html">
 <h2 class="text-primary">Valider la fiche de frais</h2>
 <div>
@@ -24,13 +23,10 @@
                 $idFrais = $unFraisForfait['idfrais']; ?>
                 <label for="<?php echo $libelle ?>"><?php echo $libelle ?></label><br>
                 <input type="number" id="<?php echo $libelle ?>" name="lesFraisForfait[<?php echo $idFrais ?>]"
-                       value="<?php echo $unFraisForfait['quantite'] ?>"></input></br>
+                       value="<?php echo $unFraisForfait['quantite'] ?>"></br>
                 <?php
-
             }
             ?>
-            <!-- TODO créer un bouton de soumission de formulaire qui ne trigger une mise à jour
-            que des FraisForfait en ne récupérant que certaines variables-->
             <button Class="btn btn-danger" id="Corriger" type="reset"> Réinitialiser
             </button>
         </div>
@@ -54,28 +50,31 @@
                     $montant = htmlspecialchars($unFraisHorsForfait['montant']); ?>
                     <tr>
                         <td>
-                            <label for="<?php echo $idFraisHorsForfait.'$'.$date ?>"></label>
-                            <input type="text" id="<?php echo $idFraisHorsForfait.'$DATE' ?>"
-                                   name="<?php echo $idFraisHorsForfait.'$DATE' ?>"
+                            <label for="<?php echo $idFraisHorsForfait . '$' . $date ?>"></label>
+                            <input type="text" id="<?php echo $idFraisHorsForfait . '$DATE' ?>"
+                                   name="<?php echo $idFraisHorsForfait . '$DATE' ?>"
                                    value="<?php echo $date ?> ">
                         </td>
                         <td>
-                            <label for="<?php echo $idFraisHorsForfait.'$'.$libelle ?>"></label>
-                            <input type="text" id="<?php echo $idFraisHorsForfait .'$LIBELLE' ?>"
-                                   name="<?php echo($idFraisHorsForfait .'$LIBELLE') ?>"
+                            <label for="<?php echo $idFraisHorsForfait . '$' . $libelle ?>"></label>
+                            <input type="text" id="<?php echo $idFraisHorsForfait . '$LIBELLE' ?>"
+                                   name="<?php echo($idFraisHorsForfait . '$LIBELLE') ?>"
                                    value="<?php echo $libelle ?> ">
                         </td>
                         <td>
-                            <label for="<?php echo $idFraisHorsForfait.'$'.$montant ?>"></label>
-                            <input type="text" id="<?php echo $idFraisHorsForfait.'$MONTANT' ?>"
-                                   name="<?php echo $idFraisHorsForfait.'$MONTANT' ?>"
+                            <label for="<?php echo $idFraisHorsForfait . '$' . $montant ?>"></label>
+                            <input type="text" id="<?php echo $idFraisHorsForfait . '$MONTANT' ?>"
+                                   name="<?php echo $idFraisHorsForfait . '$MONTANT' ?>"
                                    value="<?php echo $montant ?> ">
                         </td>
                         <td>
                             <button class="btn btn-danger" id="btn_corriger" type="reset">Réinitialiser</button>
-                            <button class="btn btn-danger" id="btn_reporter" type="submit" value="index.php?uc=gererFrais&action=reporterFrais&idFrais="<?php echo $idFraisHorsForfait ?> ">Reporter</button>
+                            <button class="btn btn-danger" id="btn_reporter" type="submit"
+                                    value="index.php?uc=gererFrais&action=reporterFrais&idFrais="<?php echo $idFraisHorsForfait ?>
+                            ">Reporter</button>
                             <a href="index.php?uc=gererFrais&action=supprimerFrais&idFrais=<?php echo $idFraisHorsForfait ?>"
-                               onclick="return confirm('Voulez-vous vraiment supprimer ce frais?');">Supprimer ce frais</a>
+                               onclick="return confirm('Voulez-vous vraiment supprimer ce frais?');">Supprimer ce
+                                frais</a>
                         </td>
                     </tr>
                     <?php
@@ -83,13 +82,11 @@
                 ?>
             </table>
         </div>
-        </br>
-        </br>
-        <input type="text" id="nbJustificatifs" name="nbJustificatifs" value="<?php echo $nbJustificatifs?>">
-    <div>
-        <button class="btn btn-success" id="submit_btn" type="submit">Valider</button>
-        <button class="btn btn-danger" id="btn_corriger_page" type="reset">Réinitialiser</button>
-    </div>
+        <input type="text" id="nbJustificatifs" name="nbJustificatifs" value="<?php echo $nbJustificatifs ?>">
+        <div>
+            <button class="btn btn-success" id="submit_btn" type="submit">Valider</button>
+            <button class="btn btn-danger" id="btn_corriger_page" type="reset">Réinitialiser</button>
+        </div>
     </form>
 
 </div>

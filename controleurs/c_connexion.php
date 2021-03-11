@@ -26,7 +26,6 @@ case 'demandeConnexion':
 case 'valideConnexion':
     $login = filter_input(INPUT_POST, 'login', FILTER_SANITIZE_STRING);
     $mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_STRING);
-
     $user = $pdo->getInfosUser($login, $mdp);
     if (!is_array($user)) {
         ajouterErreur('Login ou mot de passe incorrect');
@@ -38,9 +37,6 @@ case 'valideConnexion':
         $prenom = $user['prenom'];
         $role = $user['role'];
         connecter($id, $nom, $prenom, $role);
-        // WARN Regarder ceci, que fait "header()" exactement? Une simple redirection? Pourquoi "Location: index.php"
-        // WARN la valeur de $uc n'est pas modifiée ici, elle correspond donc toujours à ce que lui a attribué v_connexion.php ("connexion")? ==> Comment est-t'on redirigé après ça?
-        // WARN v_entete.php intègre un test pour savoir si l'utilisateur est connecté; cela modifie le retour ?
         header('Location: index.php');
     }
     break;
