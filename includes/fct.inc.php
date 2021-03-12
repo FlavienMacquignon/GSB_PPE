@@ -27,10 +27,10 @@ function estConnecte()
 /**
  * Enregistre dans une variable session les infos d'un visiteur
  *
- * @param String $idUser     ID de l'utilisateur
- * @param String $nom        Nom du visiteur
- * @param String $prenom     Prénom du visiteur
- * @param String $role       Role de l'utilisateur
+ * @param String $idUser ID de l'utilisateur
+ * @param String $nom Nom du visiteur
+ * @param String $prenom Prénom du visiteur
+ * @param String $role Role de l'utilisateur
  *
  * @return null
  */
@@ -110,9 +110,9 @@ function supprimeDoublon($tableau)
             if ($ligne == $ligne2) {
                 $double++;
                 if ($double > 1) {
-                    //TODO appeller icila deuxième clé
+                    //TODO appeller ici la deuxième clé
                     //TODO supprimer correctement l'entré afin que la clé soit supprimée également
-                    $tableau[$lescles[$k]]=null;
+                    unset($tableau[$lescles[$k]]);
                     $double--;
                     break;
                 }
@@ -216,8 +216,8 @@ function lesQteFraisValides($lesFrais)
  * Des message d'erreurs sont ajoutés au tableau des erreurs
  *
  * @param String $dateFrais Date des frais
- * @param String $libelle   Libellé des frais
- * @param Float  $montant   Montant des frais
+ * @param String $libelle Libellé des frais
+ * @param Float $montant Montant des frais
  *
  * @return null
  */

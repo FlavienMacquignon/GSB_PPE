@@ -259,7 +259,7 @@ a.thumbnail.active {
     box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
     color:#FFFFFF;
 }
-
+/* FIXME les styles ne sont pas bons */
 .panel-primary {
     border-color: #f88813;
 }

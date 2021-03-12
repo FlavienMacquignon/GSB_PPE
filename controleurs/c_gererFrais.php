@@ -187,10 +187,9 @@ switch ($action) {
         $pdo->supprimerFraisHorsForfait($idFrais);
         break;
     case "suivreFrais":
-        echo("SuivitFrais");
         $lesVisiteurs = $pdo->getTousLesVisiteurs();
         $lesMois = $pdo->getTousLesMoisDisponibles();
-        $lesMois=supprimeDoublon($lesMois);
+        // $lesMois=supprimeDoublon($lesMois);
         $lesFichesFrais = array();
         $k = 0;
         foreach ($lesVisiteurs as $unVisiteur) {
@@ -201,6 +200,7 @@ switch ($action) {
                         'idVisiteur' => $unVisiteur['id'],
                         'nom' => $unVisiteur['nom'],
                         'prenom' => $unVisiteur['prenom'],
+                        'mois' => $unMois,
                         'idEtat' => $infoFichesFrais['idEtat'],
                         'dateModif' => $infoFichesFrais['dateModif'],
                         'nbJustificatifs' => $infoFichesFrais['nbJustificatifs'],
@@ -210,11 +210,45 @@ switch ($action) {
                 }
             }
         }
+        $_SESSION['lesFichesFrais'] = $lesFichesFrais;
         include 'vues/v_Comptables/v_suivitFrais_c.php';
+        break;
+    case 'recapFrais':
+        $lesFichesFrais = $_SESSION['lesFichesFrais'];
+        unset($_SESSION['lesFichesFrais']);
+        $leVisiteurChoisi = filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING);
+        $leMoischoisi = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
+        $dateFr = dateAnglaisVersFrancais($lesFichesFrais[$leVisiteurChoisi]['dateModif']);
 
-        // TODO dropdown pour sélectionner le visiteur
-        // TODO dropdown pour sélectionner la fiche correspondant à ce visiteur
-        // TODO bouton mise en payement pour changer le statut de la fiche de Frais (& Modification de la date de modification)
+        $laFicheFrais = array(
+            'idVisiteur' => $lesFichesFrais[$leVisiteurChoisi]['idVisiteur'],
+            'nom' => $lesFichesFrais[$leVisiteurChoisi]['nom'],
+            'prenom' => $lesFichesFrais[$leVisiteurChoisi]['prenom'],
+            'mois' => $leMoischoisi,
+            'idEtat' => $lesFichesFrais[$leVisiteurChoisi]['idEtat'],
+            'dateModif' => $dateFr,
+            'nbJustificatifs' => $lesFichesFrais[$leVisiteurChoisi]['nbJustificatifs'],
+            'montantValide' => $lesFichesFrais[$leVisiteurChoisi]['montantValide'],
+            'libEtat' => $lesFichesFrais[$leVisiteurChoisi]['libEtat']
+        );
+
+        $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($laFicheFrais['idVisiteur'], $laFicheFrais['mois']);
+        $lesFraisForfait = $pdo->getLesFraisForfait($laFicheFrais['idVisiteur'], $laFicheFrais['mois']);
+        include 'vues/v_Comptables/v_recapFrais_c.php';
+        unset($_SESSION['lesFichesFrais']);
+        break;
+    case 'majFiche':
+        $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_STRING);
+        $leMois = filter_input(INPUT_GET, 'leMois', FILTER_SANITIZE_STRING);
+        $etatFrais = filter_input(INPUT_GET, 'etat', FILTER_SANITIZE_STRING);
+
+        if ($etatFrais=='CL') {
+            $pdo->majEtatFicheFrais($idVisiteur, $leMois, 'VA');
+        }
+        if ($etatFrais=='VA') {
+            $pdo->majEtatFicheFrais($idVisiteur, $leMois, 'RB');
+
+        }
         break;
 }
 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idUser, $mois);
