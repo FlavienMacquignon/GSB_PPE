@@ -59,15 +59,14 @@ switch ($action) {
             $pdo->supprimerFraisHorsForfait($idFrais);
         } else {
             $leFraisHorsForfait = $pdo->getLeFraisHorsForfait($idFrais);
-            $leFraisHorsForfait['libelle']='REFUSE'.$leFraisHorsForfait['libelle'];
-            if (strlen($leFraisHorsForfait['libelle'])>100){
-                $leFraisHorsForfait['libelle'] = $leFraisHorsForfait['libelle'].substr(0, 0,100);
+            $leFraisHorsForfait['libelle'] = 'REFUSE' . $leFraisHorsForfait['libelle'];
+            if (strlen($leFraisHorsForfait['libelle']) > 100) {
+                $leFraisHorsForfait['libelle'] = $leFraisHorsForfait['libelle'] . substr(0, 0, 100);
             }
             $leFraisHorsForfait['mois'] = $leFraisHorsForfait['mois'] + 1;
-            if (substr($leFraisHorsForfait['mois'],-2)>12)
-            {
-                $numAnnee=substr($leFraisHorsForfait['mois'], 0,-2)+1;
-                $leFraisHorsForfait= $numAnnee . '01';
+            if (substr($leFraisHorsForfait['mois'], -2) > 12) {
+                $numAnnee = substr($leFraisHorsForfait['mois'], 0, -2) + 1;
+                $leFraisHorsForfait = $numAnnee . '01';
             }
             $pdo->creeNouvellesLignesFrais($leFraisHorsForfait['visiteur'], $leFraisHorsForfait['mois']);
             $pdo->creeNouveauFraisHorsForfait(
@@ -87,6 +86,7 @@ switch ($action) {
         $lesCles = array_keys($lesMois);
         $moisASelectionner = $lesCles[0];
         include 'vues/v_Comptables/v_validerFrais_c.php';
+        // FIXME oublie du message d'erreur ici si la fiche n'est pas disponible pour ce visiteur
         break;
 
     case 'validerFrais':
@@ -121,12 +121,12 @@ switch ($action) {
          * Affichage des éléments de Frais
          */
         $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($leVisiteur, $leMois);
-        $lesFraisForfait =     $pdo->getLesFraisForfait($leVisiteur, $leMois);
-        $lesInfosFicheFrais =  $pdo->getLesInfosFicheFrais($leVisiteur, $leMois);
+        $lesFraisForfait = $pdo->getLesFraisForfait($leVisiteur, $leMois);
+        $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($leVisiteur, $leMois);
         $numAnnee = substr($leMois, 0, 4);
         $numMois = substr($leMois, 4, 2);
-        $libEtat         = $lesInfosFicheFrais['libEtat'];
-        $montantValide   = $lesInfosFicheFrais['montantValide'];
+        $libEtat = $lesInfosFicheFrais['libEtat'];
+        $montantValide = $lesInfosFicheFrais['montantValide'];
         $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
         $dateModif = dateAnglaisVersFrancais($lesInfosFicheFrais['dateModif']);
         include 'vues/v_Comptables/v_ficheFrais_c.php';
@@ -161,23 +161,22 @@ switch ($action) {
             $k++;
         }
         $pdo->majFraisHF($lesNouveauxFraisHF);
-        $nbJustificatifs=filter_input(INPUT_POST, 'nbJustificatifs', FILTER_SANITIZE_STRING );
-        $pdo->majNbJustificatifs($leVisiteur, $leMois,$nbJustificatifs);
+        $nbJustificatifs = filter_input(INPUT_POST, 'nbJustificatifs', FILTER_SANITIZE_STRING);
+        $pdo->majNbJustificatifs($leVisiteur, $leMois, $nbJustificatifs);
         break;
 
     case "reporterFrais":
-        $idFrais=filter_input(INPUT_POST, 'btn_reporter', FILTER_SANITIZE_STRING);
+        $idFrais = filter_input(INPUT_POST, 'btn_reporter', FILTER_SANITIZE_STRING);
         $leFraisHorsForfait = $pdo->getLeFraisHorsForfait($idFrais);
-        if(strlen($leFraisHorsForfait['libelle'])>100){
-            $leFraisHorsForfait['libelle']=$leFraisHorsForfait['libelle'].substr(0, 0,100);
+        if (strlen($leFraisHorsForfait['libelle']) > 100) {
+            $leFraisHorsForfait['libelle'] = $leFraisHorsForfait['libelle'] . substr(0, 0, 100);
         }
-        $leFraisHorsForfait['mois']=$leFraisHorsForfait['mois']+1;
-        if(substr($leFraisHorsForfait['mois'],-2)>12)
-        {
-            $numAnnee=substr($leFraisHorsForfait['mois'], 0,-2)+1;
-            $leFraisHorsForfait=$numAnnee.'01';
+        $leFraisHorsForfait['mois'] = $leFraisHorsForfait['mois'] + 1;
+        if (substr($leFraisHorsForfait['mois'], -2) > 12) {
+            $numAnnee = substr($leFraisHorsForfait['mois'], 0, -2) + 1;
+            $leFraisHorsForfait = $numAnnee . '01';
         }
-        $pdo->creeNouvellesLignesFrais($leFraisHorsForfait['visiteur'],$leFraisHorsForfait['mois']);
+        $pdo->creeNouvellesLignesFrais($leFraisHorsForfait['visiteur'], $leFraisHorsForfait['mois']);
         $pdo->creeNouveauFraisHorsForfait(
             $leFraisHorsForfait['visiteur'],
             $leFraisHorsForfait['mois'],
@@ -186,6 +185,36 @@ switch ($action) {
             $leFraisHorsForfait['montant']
         );
         $pdo->supprimerFraisHorsForfait($idFrais);
+        break;
+    case "suivreFrais":
+        echo("SuivitFrais");
+        $lesVisiteurs = $pdo->getTousLesVisiteurs();
+        $lesMois = $pdo->getTousLesMoisDisponibles();
+        $lesMois=supprimeDoublon($lesMois);
+        $lesFichesFrais = array();
+        $k = 0;
+        foreach ($lesVisiteurs as $unVisiteur) {
+            foreach ($lesMois as $unMois) {
+                $infoFichesFrais = $pdo->getLesInfosFicheFrais($unVisiteur['id'], $unMois);
+                if (isset($infoFichesFrais['idEtat'])) {
+                    $lesFichesFrais[$k] = array(
+                        'idVisiteur' => $unVisiteur['id'],
+                        'nom' => $unVisiteur['nom'],
+                        'prenom' => $unVisiteur['prenom'],
+                        'idEtat' => $infoFichesFrais['idEtat'],
+                        'dateModif' => $infoFichesFrais['dateModif'],
+                        'nbJustificatifs' => $infoFichesFrais['nbJustificatifs'],
+                        'montantValide' => $infoFichesFrais['montantValide'],
+                        'libEtat' => $infoFichesFrais['libEtat']);
+                    $k++;
+                }
+            }
+        }
+        include 'vues/v_Comptables/v_suivitFrais_c.php';
+
+        // TODO dropdown pour sélectionner le visiteur
+        // TODO dropdown pour sélectionner la fiche correspondant à ce visiteur
+        // TODO bouton mise en payement pour changer le statut de la fiche de Frais (& Modification de la date de modification)
         break;
 }
 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idUser, $mois);
