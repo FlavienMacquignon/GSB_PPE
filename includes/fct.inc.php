@@ -98,6 +98,31 @@ function getMois($date)
     return $annee . $mois;
 }
 
+// TODO créer une fonction qui supprime les doublons dans un tableau
+function supprimeDoublon($tableau)
+{
+    $lescles=array_keys($tableau);
+    $k=0;
+    foreach ($tableau as $ligne) {
+        $double=0;
+        foreach ($tableau as $ligne2) {
+
+            if ($ligne == $ligne2) {
+                $double++;
+                if ($double > 1) {
+                    //TODO appeller icila deuxième clé
+                    //TODO supprimer correctement l'entré afin que la clé soit supprimée également
+                    $tableau[$lescles[$k]]=null;
+                    $double--;
+                    break;
+                }
+            }
+        }
+        $k++;
+    }
+    return $tableau;
+}
+
 /* gestion des erreurs */
 
 /**
