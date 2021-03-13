@@ -22,6 +22,7 @@
         <strong><u>Etat :</u></strong> <?php echo $laFicheFrais['libEtat'] ?>
         depuis le <?php echo $laFicheFrais['dateModif'] ?> <br>
         <strong><u>Montant validé :</u></strong> <?php echo $laFicheFrais['montantValide'] ?> <br>
+        <!-- TODO faire de ceci un "vrai bouton stylisé -->
         <button><a href="index.php?uc=gererFrais&action=majFiche&idVisiteur=<?php echo $laFicheFrais['idVisiteur']?>&leMois=<?php echo $laFicheFrais['mois']?>&etat=<?php echo $laFicheFrais['idEtat'] ?>">Mettre à jour la fiche</a></button>
     </div>
 </div>

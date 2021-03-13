@@ -99,6 +99,7 @@ function getMois($date)
 }
 
 // TODO créer une fonction qui supprime les doublons dans un tableau
+// TODO check ceci: https://www.geeksforgeeks.org/php-in_array-function/
 function supprimeDoublon($tableau)
 {
     $lescles=array_keys($tableau);

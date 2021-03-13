@@ -86,7 +86,6 @@ switch ($action) {
         $lesCles = array_keys($lesMois);
         $moisASelectionner = $lesCles[0];
         include 'vues/v_Comptables/v_validerFrais_c.php';
-        // FIXME oublie du message d'erreur ici si la fiche n'est pas disponible pour ce visiteur
         break;
 
     case 'validerFrais':
@@ -122,15 +121,24 @@ switch ($action) {
          */
         $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($leVisiteur, $leMois);
         $lesFraisForfait = $pdo->getLesFraisForfait($leVisiteur, $leMois);
-        $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($leVisiteur, $leMois);
-        $numAnnee = substr($leMois, 0, 4);
-        $numMois = substr($leMois, 4, 2);
-        $libEtat = $lesInfosFicheFrais['libEtat'];
-        $montantValide = $lesInfosFicheFrais['montantValide'];
-        $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
-        $dateModif = dateAnglaisVersFrancais($lesInfosFicheFrais['dateModif']);
-        include 'vues/v_Comptables/v_ficheFrais_c.php';
-        break;
+        // TODO attack array by key to see if they populate
+
+        if ($lesFraisForfait[0] != null) {
+            $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($leVisiteur, $leMois);
+            $numAnnee = substr($leMois, 0, 4);
+            $numMois = substr($leMois, 4, 2);
+            $libEtat = $lesInfosFicheFrais['libEtat'];
+            $montantValide = $lesInfosFicheFrais['montantValide'];
+            $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
+            $dateModif = dateAnglaisVersFrancais($lesInfosFicheFrais['dateModif']);
+            include 'vues/v_Comptables/v_ficheFrais_c.php';
+            break;
+        } else {
+            ajouterErreur('Il n\'y a pas de fiche de Frais pour ce visiteur ce mois');
+            include "vues/v_erreurs.php";
+            break;
+        }
+
 
     case "soumettreFrais":
         $leVisiteur = $_SESSION['leVisiteur'];
@@ -189,6 +197,7 @@ switch ($action) {
     case "suivreFrais":
         $lesVisiteurs = $pdo->getTousLesVisiteurs();
         $lesMois = $pdo->getTousLesMoisDisponibles();
+        //FIXME vérifier cette fonction
         // $lesMois=supprimeDoublon($lesMois);
         $lesFichesFrais = array();
         $k = 0;
@@ -214,6 +223,7 @@ switch ($action) {
         include 'vues/v_Comptables/v_suivitFrais_c.php';
         break;
     case 'recapFrais':
+        //FIXME erreur, d'affichage confusion entre les fiches, la sélection d'un visiteur qui n'a pas de fiche pour ce mois affiche la fiche d'un autre visiteur
         $lesFichesFrais = $_SESSION['lesFichesFrais'];
         unset($_SESSION['lesFichesFrais']);
         $leVisiteurChoisi = filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING);
@@ -221,7 +231,7 @@ switch ($action) {
         $dateFr = dateAnglaisVersFrancais($lesFichesFrais[$leVisiteurChoisi]['dateModif']);
 
         $laFicheFrais = array(
-            'idVisiteur' => $lesFichesFrais[$leVisiteurChoisi]['idVisiteur'],
+            'idVisiteur' => $leVisiteurChoisi,
             'nom' => $lesFichesFrais[$leVisiteurChoisi]['nom'],
             'prenom' => $lesFichesFrais[$leVisiteurChoisi]['prenom'],
             'mois' => $leMoischoisi,
@@ -234,18 +244,27 @@ switch ($action) {
 
         $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($laFicheFrais['idVisiteur'], $laFicheFrais['mois']);
         $lesFraisForfait = $pdo->getLesFraisForfait($laFicheFrais['idVisiteur'], $laFicheFrais['mois']);
-        include 'vues/v_Comptables/v_recapFrais_c.php';
-        unset($_SESSION['lesFichesFrais']);
-        break;
+        if($lesFraisForfait[0]!=null) {
+
+
+            include 'vues/v_Comptables/v_recapFrais_c.php';
+            unset($_SESSION['lesFichesFrais']);
+            break;
+        }else{
+            ajouterErreur('Il n\'y a pas de fiche de Frais pour ce visiteur ce mois');
+            include "vues/v_erreurs.php";
+            break;
+        }
+
     case 'majFiche':
         $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_STRING);
         $leMois = filter_input(INPUT_GET, 'leMois', FILTER_SANITIZE_STRING);
         $etatFrais = filter_input(INPUT_GET, 'etat', FILTER_SANITIZE_STRING);
 
-        if ($etatFrais=='CL') {
+        if ($etatFrais == 'CL') {
             $pdo->majEtatFicheFrais($idVisiteur, $leMois, 'VA');
         }
-        if ($etatFrais=='VA') {
+        if ($etatFrais == 'VA') {
             $pdo->majEtatFicheFrais($idVisiteur, $leMois, 'RB');
 
         }
