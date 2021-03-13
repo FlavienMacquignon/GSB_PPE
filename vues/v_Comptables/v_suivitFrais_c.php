@@ -21,21 +21,19 @@
                 <?php
                 $idVisiteur = -1;
                 $lesVisiteurs=array();
-                $k=0;
+
                 foreach ($lesFichesFrais as $ficheFrais) {
                     //WARN les visiteurs ne se suivent pas forcément
                     if ($idVisiteur != $ficheFrais['idVisiteur']) {
-
                         $idVisiteur = $ficheFrais['idVisiteur'];
                         $nom = $ficheFrais['nom'];
                         $prenom = $ficheFrais['prenom'];
                         ?>
-                        <option value="<?php echo $k ?>">
+                        <option value="<?php echo $ficheFrais['idVisiteur'] ?>">
                             <?php echo $nom . ' ' . $prenom ?>
                         </option>
                         <?php
                     }
-                    $K++;
                 }
                 ?>
             </select>
