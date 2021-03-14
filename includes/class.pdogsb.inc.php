@@ -381,7 +381,7 @@ class PdoGsb
         }
         $requetePrepare = PdoGsb::$monPdo->prepare(
             'INSERT INTO ficheFrais (idUserFK, mois, nbjustificatifs,'
-            . 'montantvalide, datemodif, idEtatFK) '
+            . 'montantValide, datemodif, idEtatFK) '
             . "VALUES (:unIdUser, :unMois, 0, 0, now(), 'CR')"
         );
         $requetePrepare->bindParam(':unIdUser', $idUser, PDO::PARAM_STR);

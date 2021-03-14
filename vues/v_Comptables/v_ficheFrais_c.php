@@ -72,9 +72,10 @@
                             <button class="btn btn-danger" id="btn_reporter" type="submit"
                                     value="index.php?uc=gererFrais&action=reporterFrais&idFrais="<?php echo $idFraisHorsForfait ?>
                             ">Reporter</button>
-                            <a href="index.php?uc=gererFrais&action=supprimerFrais&idFrais=<?php echo $idFraisHorsForfait ?>"
-                               onclick="return confirm('Voulez-vous vraiment supprimer ce frais?');">Supprimer ce
-                                frais</a>
+                            <button class="btn btn-danger">
+                                <a href="index.php?uc=gererFrais&action=supprimerFrais&idFrais=<?php echo $idFraisHorsForfait ?>"
+                                   onclick="return confirm('Voulez-vous vraiment supprimer ce frais?');" style="color: white">Supprimer ce
+                                    frais</a></button>
                         </td>
                     </tr>
                     <?php
