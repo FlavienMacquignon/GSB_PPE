@@ -9,8 +9,6 @@
  * @author Flavien Macquignon <flavien_macquignon@fastmail.fr>
  * @version GIT : <0>
  */
-
-// FIXME style temporaire
 ?>
 
 <hr>
@@ -18,18 +16,18 @@
     <div class="panel-heading">Fiche de frais du mois
         <?php echo $laFicheFrais['mois'] ?> :
     </div>
-    <div class="panel-body" style="color: black">
+    <div class="panel-body">
         <strong><u>Etat :</u></strong> <?php echo $laFicheFrais['libEtat'] ?>
         depuis le <?php echo $laFicheFrais['dateModif'] ?> <br>
         <strong><u>Montant validé :</u></strong> <?php echo $laFicheFrais['montantValide'] ?> <br>
         <!-- TODO faire de ceci un "vrai bouton stylisé -->
-        <button><a href="index.php?uc=gererFrais&action=majFiche&idVisiteur=<?php echo $laFicheFrais['idVisiteur']?>&leMois=<?php echo $laFicheFrais['mois']?>&etat=<?php echo $laFicheFrais['idEtat'] ?>">Mettre à jour la fiche</a></button>
+        <button class="btn btn-default"><a href="index.php?uc=gererFrais&action=majFiche&idVisiteur=<?php echo $laFicheFrais['idVisiteur']?>&leMois=<?php echo $laFicheFrais['mois']?>&etat=<?php echo $laFicheFrais['idEtat'] ?>">Mettre à jour la fiche</a></button>
     </div>
 </div>
 <div class="panel panel-info">
     <div class="panel-heading">Eléments forfaitisés</div>
     <table class="table table-bordered table-responsive">
-        <tr style="color: black">
+        <tr>
             <?php
             foreach ($lesFraisForfait as $unFraisForfait) {
                 $libelle = $unFraisForfait['libelle']; ?>
@@ -38,7 +36,7 @@
             }
             ?>
         </tr>
-        <tr style="color: black">
+        <tr>
             <?php
             foreach ($lesFraisForfait as $unFraisForfait) {
                 $quantite = $unFraisForfait['quantite']; ?>
@@ -56,9 +54,9 @@
     </div>
     <table class="table table-bordered table-responsive">
         <tr>
-            <th class="date" style="color: black">Date</th>
-            <th class="libelle" style="color: black">Libellé</th>
-            <th class='montant' style="color: black">Montant</th>
+            <th class="date" >Date</th>
+            <th class="libelle">Libellé</th>
+            <th class="montant">Montant</th>
         </tr>
         <?php
         foreach ($lesFraisHorsForfait as $unFraisHorsForfait) {
@@ -66,9 +64,9 @@
             $libelle = htmlspecialchars($unFraisHorsForfait['libelle']);
             $montant = $unFraisHorsForfait['montant']; ?>
             <tr>
-                <td style="color: black"><?php echo $date ?></td>
-                <td style="color: black"><?php echo $libelle ?></td>
-                <td style="color: black"><?php echo $montant ?></td>
+                <td><?php echo $date ?></td>
+                <td><?php echo $libelle ?></td>
+                <td><?php echo $montant ?></td>
             </tr>
             <?php
         }
