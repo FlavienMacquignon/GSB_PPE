@@ -121,8 +121,6 @@ switch ($action) {
          */
         $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($leVisiteur, $leMois);
         $lesFraisForfait = $pdo->getLesFraisForfait($leVisiteur, $leMois);
-        // TODO attack array by key to see if they populate
-
         if ($lesFraisForfait[0] != null) {
             $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($leVisiteur, $leMois);
             $numAnnee = substr($leMois, 0, 4);
@@ -223,7 +221,6 @@ switch ($action) {
         include 'vues/v_Comptables/v_suivitFrais_c.php';
         break;
     case 'recapFrais':
-        //FIXME erreur, d'affichage confusion entre les fiches, la sélection d'un visiteur qui n'a pas de fiche pour ce mois affiche la fiche d'un autre visiteur
         $lesFichesFrais = $_SESSION['lesFichesFrais'];
         unset($_SESSION['lesFichesFrais']);
         $leVisiteurChoisi = filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING);
@@ -245,8 +242,6 @@ switch ($action) {
         $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($laFicheFrais['idVisiteur'], $laFicheFrais['mois']);
         $lesFraisForfait = $pdo->getLesFraisForfait($laFicheFrais['idVisiteur'], $laFicheFrais['mois']);
         if($lesFraisForfait[0]!=null) {
-
-
             include 'vues/v_Comptables/v_recapFrais_c.php';
             unset($_SESSION['lesFichesFrais']);
             break;
@@ -266,7 +261,6 @@ switch ($action) {
         }
         if ($etatFrais == 'VA') {
             $pdo->majEtatFicheFrais($idVisiteur, $leMois, 'RB');
-
         }
         break;
 }
