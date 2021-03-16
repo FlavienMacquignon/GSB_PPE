@@ -92,16 +92,26 @@ class PdoGsb
      */
     public function getInfosUser($login, $mdp)
     {
+        $requetePass= PdoGsb::$monPdo->prepare(
+          'SELECT userTable.mdp AS mdp '
+          .'FROM gsb_frais.userTable '
+          .'WHERE userTable.login= :unLogin'
+        );
+        $requetePass->bindParam(':unLogin', $login, PDO::PARAM_STR);
+        $requetePass->execute();
+        $mdpHash = $requetePass->fetch();
+        if(!password_verify($mdp, $mdpHash['mdp'])){
+            return false;
+        }
         $requetePrepare = PdoGsb::$monPdo->prepare(
             'SELECT userTable.idUserPK AS id, '
             . 'userTable.nom AS nom, '
             . 'userTable.prenom AS prenom, '
             . 'userTable.idRole AS role '
             . 'FROM gsb_frais.userTable '
-            . 'WHERE userTable.login = :unLogin AND userTable.mdp = :unMdp'
+            . 'WHERE userTable.login = :unLogin'
         );
         $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
-        $requetePrepare->bindParam(':unMdp', $mdp, PDO::PARAM_STR);
         $requetePrepare->execute();
         return $requetePrepare->fetch();
     }
