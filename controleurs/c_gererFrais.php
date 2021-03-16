@@ -59,7 +59,7 @@ switch ($action) {
             $pdo->supprimerFraisHorsForfait($idFrais);
         } else {
             $leFraisHorsForfait = $pdo->getLeFraisHorsForfait($idFrais);
-            $leFraisHorsForfait['libelle'] = 'REFUSE' . $leFraisHorsForfait['libelle'];
+            $leFraisHorsForfait['libelle'] = 'REFUSE ' . $leFraisHorsForfait['libelle'];
             if (strlen($leFraisHorsForfait['libelle']) > 100) {
                 $leFraisHorsForfait['libelle'] = $leFraisHorsForfait['libelle'] . substr(0, 0, 100);
             }
@@ -255,13 +255,28 @@ switch ($action) {
         $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_STRING);
         $leMois = filter_input(INPUT_GET, 'leMois', FILTER_SANITIZE_STRING);
         $etatFrais = filter_input(INPUT_GET, 'etat', FILTER_SANITIZE_STRING);
-
-        if ($etatFrais == 'CL') {
+       if ($etatFrais == 'CL') {
             $pdo->majEtatFicheFrais($idVisiteur, $leMois, 'VA');
+
         }
         if ($etatFrais == 'VA') {
             $pdo->majEtatFicheFrais($idVisiteur, $leMois, 'RB');
         }
+        $montantValide=0;
+        $lesFraisForfait= $pdo->getLesFraisForfait($idVisiteur, $leMois);
+        $lesFraisHorsForfait= $pdo->getLesFraisHorsForfait($idVisiteur,$leMois);
+        $montantForfait= $pdo->getLesMontantForfait();
+        foreach ($lesFraisForfait as $unFraisForfait){
+            $montantValide+=($unFraisForfait["quantite"]*$montantForfait[$unFraisForfait["idfrais"]]);
+
+        }
+        foreach ($lesFraisHorsForfait as $unFraisHorsForfait){
+            if(!(substr($unFraisHorsForfait["libelle"],0,7)=="REFUSE ")){
+                $montantValide+=$unFraisHorsForfait["montant"];
+            }
+
+        }
+        $pdo->validerMontant($idVisiteur, $leMois, $montantValide);
         break;
 }
 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idUser, $mois);

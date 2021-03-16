@@ -235,6 +235,44 @@ class PdoGsb
     }
 
     /**
+     * Retourne les montant des frais forfaitisés tels qu'enregistrés dans la table fraisForfait
+     *
+     * @return mixed un tableau associatif avec pour clé les idFrais
+     */
+    public function getLesMontantForfait()
+    {
+        $requetePrepare = PdoGsb::$monPdo->prepare(
+            'SELECT fraisForfait.idFraisForfaitPK as idfrais, '
+            .'fraisForfait.montant as montant '
+            .'FROM fraisForfait'
+        );
+        $requetePrepare->execute();
+        return $requetePrepare->fetchAll(PDO::FETCH_KEY_PAIR);
+    }
+
+    /**
+     * Enregistre le nouveau montant Validé par les services comptables de la fiche de frais
+     * @param Integer $idUser         un idVisiteur
+     * @param Integer $mois           le mois concerné par la fiche de frais
+     * @param Float   $montantValide  le montant à enregistrer
+     *
+     * @return null
+     */
+    public function validerMontant($idUser, $mois, $montantValide)
+    {
+        $requetePrepare = PdoGsb::$monPdo->prepare(
+            'UPDATE ficheFrais '
+            .'SET montantValide = :montantValide '
+            .'WHERE idUserFK = :idUser '
+            .'AND mois = :mois'
+        );
+        $requetePrepare->bindParam(':montantValide', $montantValide, PDO::PARAM_INT);
+        $requetePrepare->bindParam(':idUser', $idUser, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':mois', $mois, PDO::PARAM_STR);
+        $requetePrepare->execute();
+    }
+
+    /**
      * Met à jour la table ligneFraisForfait
      * Met à jour la table ligneFraisForfait pour un visiteur et
      * un mois donné en enregistrant les nouveaux montants
