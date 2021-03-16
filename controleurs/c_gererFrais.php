@@ -226,26 +226,34 @@ switch ($action) {
         $leVisiteurChoisi = filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING);
         $leMoischoisi = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
         $dateFr = dateAnglaisVersFrancais($lesFichesFrais[$leVisiteurChoisi]['dateModif']);
+        $k = 0;
+        foreach ($lesFichesFrais as $uneFicheFrais) {
+            if ($uneFicheFrais['idVisiteur'] == $leVisiteurChoisi && $uneFicheFrais['mois'] == $leMoischoisi) {
+                break;
+            } else {
+                $k++;
+            }
+        }
 
         $laFicheFrais = array(
             'idVisiteur' => $leVisiteurChoisi,
-            'nom' => $lesFichesFrais[$leVisiteurChoisi]['nom'],
-            'prenom' => $lesFichesFrais[$leVisiteurChoisi]['prenom'],
+            'nom' => $lesFichesFrais[$k]['nom'],
+            'prenom' => $lesFichesFrais[$k]['prenom'],
             'mois' => $leMoischoisi,
-            'idEtat' => $lesFichesFrais[$leVisiteurChoisi]['idEtat'],
+            'idEtat' => $lesFichesFrais[$k]['idEtat'],
             'dateModif' => $dateFr,
-            'nbJustificatifs' => $lesFichesFrais[$leVisiteurChoisi]['nbJustificatifs'],
-            'montantValide' => $lesFichesFrais[$leVisiteurChoisi]['montantValide'],
-            'libEtat' => $lesFichesFrais[$leVisiteurChoisi]['libEtat']
+            'nbJustificatifs' => $lesFichesFrais[$k]['nbJustificatifs'],
+            'montantValide' => $lesFichesFrais[$k]['montantValide'],
+            'libEtat' => $lesFichesFrais[$k]['libEtat']
         );
 
         $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($laFicheFrais['idVisiteur'], $laFicheFrais['mois']);
         $lesFraisForfait = $pdo->getLesFraisForfait($laFicheFrais['idVisiteur'], $laFicheFrais['mois']);
-        if($lesFraisForfait[0]!=null) {
+        if ($lesFraisForfait[0] != null) {
             include 'vues/v_Comptables/v_recapFrais_c.php';
             unset($_SESSION['lesFichesFrais']);
             break;
-        }else{
+        } else {
             ajouterErreur('Il n\'y a pas de fiche de Frais pour ce visiteur ce mois');
             include "vues/v_erreurs.php";
             break;
@@ -255,24 +263,24 @@ switch ($action) {
         $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_STRING);
         $leMois = filter_input(INPUT_GET, 'leMois', FILTER_SANITIZE_STRING);
         $etatFrais = filter_input(INPUT_GET, 'etat', FILTER_SANITIZE_STRING);
-       if ($etatFrais == 'CL') {
+        if ($etatFrais == 'CL') {
             $pdo->majEtatFicheFrais($idVisiteur, $leMois, 'VA');
 
         }
         if ($etatFrais == 'VA') {
             $pdo->majEtatFicheFrais($idVisiteur, $leMois, 'RB');
         }
-        $montantValide=0;
-        $lesFraisForfait= $pdo->getLesFraisForfait($idVisiteur, $leMois);
-        $lesFraisHorsForfait= $pdo->getLesFraisHorsForfait($idVisiteur,$leMois);
-        $montantForfait= $pdo->getLesMontantForfait();
-        foreach ($lesFraisForfait as $unFraisForfait){
-            $montantValide+=($unFraisForfait["quantite"]*$montantForfait[$unFraisForfait["idfrais"]]);
+        $montantValide = 0;
+        $lesFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $leMois);
+        $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur, $leMois);
+        $montantForfait = $pdo->getLesMontantForfait();
+        foreach ($lesFraisForfait as $unFraisForfait) {
+            $montantValide += ($unFraisForfait["quantite"] * $montantForfait[$unFraisForfait["idfrais"]]);
 
         }
-        foreach ($lesFraisHorsForfait as $unFraisHorsForfait){
-            if(!(substr($unFraisHorsForfait["libelle"],0,7)=="REFUSE ")){
-                $montantValide+=$unFraisHorsForfait["montant"];
+        foreach ($lesFraisHorsForfait as $unFraisHorsForfait) {
+            if (!(substr($unFraisHorsForfait["libelle"], 0, 7) == "REFUSE ")) {
+                $montantValide += $unFraisHorsForfait["montant"];
             }
 
         }
